@@ -5,9 +5,9 @@ import (
 	"runtime"
 
 	g143 "github.com/bankole7782/graphics143"
-	"github.com/disintegration/imaging"
 	"github.com/fogleman/gg"
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/kovidgoyal/imaging"
 )
 
 func getHoverCB(state map[int]g143.Rect) glfw.CursorPosCallback {

@@ -127,21 +127,6 @@ func (ctx *Ctx) drawInput(inputId, originX, originY, inputWidth int, placeholder
 	return entryRect
 }
 
-func (ctx *Ctx) drawFileInput(inputId, originX, originY, inputWidth int, placeholder string) g143.Rect {
-	ctx.ggCtx.SetHexColor("#eee")
-	ctx.ggCtx.DrawRectangle(float64(originX), float64(originY), float64(inputWidth), 30)
-	ctx.ggCtx.Fill()
-
-	ctx.ggCtx.SetHexColor("#444")
-	placeholderW, _ := ctx.ggCtx.MeasureString(placeholder)
-	placeholderX := originX + (inputWidth-int(placeholderW))/2
-	ctx.ggCtx.DrawString(placeholder, float64(placeholderX), float64(originY)+FontSize)
-
-	fIRect := g143.NewRect(originX, originY, inputWidth, 30)
-	(*ctx.ObjCoords)[inputId] = fIRect
-	return fIRect
-}
-
 func (ctx *Ctx) drawCheckbox(inputId, originX, originY int, isSelected bool) g143.Rect {
 	width := 30
 	height := 30

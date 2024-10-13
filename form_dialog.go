@@ -4,8 +4,8 @@ import (
 	"image"
 
 	g143 "github.com/bankole7782/graphics143"
-	"github.com/disintegration/imaging"
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/kovidgoyal/imaging"
 )
 
 func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
@@ -29,14 +29,20 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 		float64(dialogHeight), 20)
 	theCtx.ggCtx.Fill()
 
-	// Add Image
+	// Add Form
+	aFLX, aFLY := dialogOriginX+20, dialogOriginY+20
 	theCtx.ggCtx.SetHexColor("#444")
-	theCtx.ggCtx.DrawString("Add Form Configuration", float64(dialogOriginX)+20, float64(dialogOriginY)+20+20)
+	theCtx.ggCtx.DrawString("Add Form Configuration", float64(aFLX), float64(aFLY)+FontSize)
 
 	addBtnOriginX := dialogWidth + dialogOriginX - 160
 	addBtnRect := theCtx.drawButtonA(FD_AddBtn, addBtnOriginX, dialogOriginY+20, "Add", "#fff", "#56845A")
 	closeBtnX, _ := nextHorizontalCoords(addBtnRect, 10)
 	theCtx.drawButtonA(FD_CloseBtn, closeBtnX, addBtnRect.OriginY, "Close", "#fff", "#B75F5F")
+
+	// name input
+	theCtx.ggCtx.SetHexColor("#444")
+	fNLY := aFLY + 30
+	theCtx.ggCtx.DrawString("field name:", float64(aFLX), float64(fNLY)+FontSize)
 
 	// send the frame to glfw window
 	g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
