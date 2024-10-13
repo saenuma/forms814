@@ -48,13 +48,13 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 		outPath := filepath.Join(rootPath, ProjectName)
 		os.WriteFile(outPath, []byte(""), 0777)
 
-		// // move to work view
-		// DrawWorkView(window, 1)
+		// move to work view
+		DrawWorkView(window, 1)
 		// window.SetMouseButtonCallback(workViewMouseBtnCallback)
 		// window.SetKeyCallback(nil)
 		// window.SetScrollCallback(FirstUIScrollCallback)
-		// // quick hover effect
-		// window.SetCursorPosCallback(getHoverCB(ObjCoords))
+		// quick hover effect
+		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
 	}
 
 	if widgetCode > 1000 && widgetCode < 2000 {
@@ -73,10 +73,10 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 		Instructions = append(Instructions, obj...)
 
 		// move to work view
-		// DrawWorkView(window, 1)
+		DrawWorkView(window, 1)
 		// window.SetMouseButtonCallback(workViewMouseBtnCallback)
 		// window.SetKeyCallback(nil)
 		// window.SetScrollCallback(FirstUIScrollCallback)
-		// window.SetCursorPosCallback(getHoverCB(ObjCoords))
+		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
 	}
 }

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
@@ -54,6 +56,35 @@ func DrawBeginView(window *glfw.Window) {
 	// send the frame to glfw window
 	windowRS := g143.Rect{Width: wWidth, Height: wHeight, OriginX: 0, OriginY: 0}
 	g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), windowRS)
+	window.SwapBuffers()
+
+	// save the frame
+	CurrentWindowFrame = theCtx.ggCtx.Image()
+}
+
+func DrawWorkView(window *glfw.Window, page int) {
+	CurrentPage = page
+
+	window.SetTitle(fmt.Sprintf("Project: %s ---- %s", ProjectName, ProgTitle))
+
+	WKObjCoords = make(map[int]g143.Rect)
+
+	wWidth, wHeight := window.GetSize()
+	theCtx := New2dCtx(wWidth, wHeight, &WKObjCoords)
+
+	// draw top buttons
+	aFBRect := theCtx.drawButtonB(WK_AddFormBtn, 300, 10, "Add Form Button", "#fff", "#B19644", "#DECC6E")
+	aISX, aISY := nextHorizontalCoords(aFBRect, 10)
+	oWDBRect := theCtx.drawButtonB(WK_OpenWDBtn, aISX, aISY, "Open Working Directory", "#fff", "#5C909C", "#286775")
+
+	// draw end of topbar demarcation
+	_, demarcY := nextVerticalCoords(oWDBRect, 10)
+	theCtx.ggCtx.SetHexColor("#aaa")
+	theCtx.ggCtx.DrawRectangle(10, float64(demarcY), float64(wWidth)-20, 3)
+	theCtx.ggCtx.Fill()
+
+	// send the frame to glfw window
+	g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
 	window.SwapBuffers()
 
 	// save the frame
