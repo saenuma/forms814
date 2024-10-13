@@ -5,7 +5,9 @@ import (
 	"math"
 	"math/rand"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 	"slices"
 	"strings"
 
@@ -49,6 +51,17 @@ func UntestedRandomString(length int) string {
 		b[i] = letters[rand.Intn(len(letters))]
 	}
 	return string(b)
+}
+
+func ExternalLaunch(p string) {
+	cmd := "url.dll,FileProtocolHandler"
+	runDll32 := filepath.Join(os.Getenv("SYSTEMROOT"), "System32", "rundll32.exe")
+
+	if runtime.GOOS == "windows" {
+		exec.Command(runDll32, cmd, p).Run()
+	} else if runtime.GOOS == "linux" {
+		exec.Command("xdg-open", p).Run()
+	}
 }
 
 func IsKeyNumeric(key glfw.Key) bool {

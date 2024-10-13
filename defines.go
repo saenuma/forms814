@@ -19,6 +19,9 @@ const (
 	WK_AddFormBtn = 21
 	WK_OpenWDBtn  = 22
 
+	FD_AddBtn   = 31
+	FD_CloseBtn = 32
+
 	ProgTitle = "forms814: a tool for website developers on records collection"
 )
 
@@ -36,6 +39,7 @@ var (
 	// view projects
 	ProjObjCoords map[int]g143.Rect
 	WKObjCoords   map[int]g143.Rect
+	FDObjCoords   map[int]g143.Rect
 
 	NameInputEnteredTxt string
 

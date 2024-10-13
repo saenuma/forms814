@@ -80,7 +80,7 @@ func DrawWorkView(window *glfw.Window, page int) {
 	// draw end of topbar demarcation
 	_, demarcY := nextVerticalCoords(oWDBRect, 10)
 	theCtx.ggCtx.SetHexColor("#aaa")
-	theCtx.ggCtx.DrawRectangle(10, float64(demarcY), float64(wWidth)-20, 3)
+	theCtx.ggCtx.DrawRectangle(10, float64(demarcY), float64(wWidth)-20, 2)
 	theCtx.ggCtx.Fill()
 
 	// send the frame to glfw window

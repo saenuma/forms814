@@ -50,8 +50,8 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 
 		// move to work view
 		DrawWorkView(window, 1)
-		// window.SetMouseButtonCallback(workViewMouseBtnCallback)
-		// window.SetKeyCallback(nil)
+		window.SetMouseButtonCallback(workViewMouseBtnCallback)
+		window.SetKeyCallback(nil)
 		// window.SetScrollCallback(FirstUIScrollCallback)
 		// quick hover effect
 		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
@@ -74,9 +74,93 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 
 		// move to work view
 		DrawWorkView(window, 1)
-		// window.SetMouseButtonCallback(workViewMouseBtnCallback)
-		// window.SetKeyCallback(nil)
+		window.SetMouseButtonCallback(workViewMouseBtnCallback)
+		window.SetKeyCallback(nil)
 		// window.SetScrollCallback(FirstUIScrollCallback)
 		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
+	}
+}
+
+func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
+	if action != glfw.Release {
+		return
+	}
+
+	xPos, yPos := window.GetCursorPos()
+	xPosInt := int(xPos)
+	yPosInt := int(yPos)
+
+	// wWidth, wHeight := window.GetSize()
+
+	// var widgetRS g143.Rect
+	var widgetCode int
+
+	for code, RS := range WKObjCoords {
+		if g143.InRect(RS, xPosInt, yPosInt) {
+			// widgetRS = RS
+			widgetCode = code
+			// break
+		}
+	}
+
+	if widgetCode == 0 {
+		return
+	}
+
+	switch widgetCode {
+	case WK_AddFormBtn:
+		// tmpFrame = CurrentWindowFrame
+		DrawFormDialog(window, CurrentWindowFrame)
+		window.SetMouseButtonCallback(fdMouseBtnCallback)
+		// window.SetKeyCallback(VaikeyCallback)
+		window.SetScrollCallback(nil)
+		window.SetCursorPosCallback(getHoverCB(FDObjCoords))
+
+	case WK_OpenWDBtn:
+		rootPath, _ := GetRootPath()
+		ExternalLaunch(rootPath)
+
+	}
+}
+
+func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
+	if action != glfw.Release {
+		return
+	}
+
+	xPos, yPos := window.GetCursorPos()
+	xPosInt := int(xPos)
+	yPosInt := int(yPos)
+
+	// wWidth, wHeight := window.GetSize()
+
+	// var widgetRS g143.Rect
+	var widgetCode int
+
+	for code, RS := range FDObjCoords {
+		if g143.InRect(RS, xPosInt, yPosInt) {
+			// widgetRS = RS
+			widgetCode = code
+			// break
+		}
+	}
+
+	if widgetCode == 0 {
+		return
+	}
+
+	switch widgetCode {
+	case FD_CloseBtn:
+		IsUpdateDialog = false
+		IsInsertBeforeDialog = false
+
+		DrawWorkView(window, CurrentPage)
+		// register the ViewMain mouse callback
+		window.SetMouseButtonCallback(workViewMouseBtnCallback)
+		// unregister the keyCallback
+		window.SetKeyCallback(nil)
+		// window.SetScrollCallback(FirstUIScrollCallback)
+		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
+
 	}
 }
