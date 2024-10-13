@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 	"slices"
@@ -235,7 +234,6 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		theCtx.drawCheckbox(widgetCode, widgetRS.OriginX, widgetRS.OriginY, true)
 
 		SelectedFieldType = fType
-		fmt.Println(SelectedFieldType)
 		// send the frame to glfw window
 		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
 		window.SwapBuffers()

@@ -28,9 +28,9 @@ func ProjKeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glf
 		os.WriteFile(outPath, []byte(""), 0777)
 
 		// // move to work view
-		// DrawWorkView(window, 1)
-		// window.SetMouseButtonCallback(workViewMouseBtnCallback)
-		// window.SetKeyCallback(nil)
+		DrawWorkView(window, 1)
+		window.SetMouseButtonCallback(workViewMouseBtnCallback)
+		window.SetKeyCallback(nil)
 		// window.SetScrollCallback(FirstUIScrollCallback)
 		return
 	} else {
