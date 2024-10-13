@@ -2,6 +2,7 @@ package main
 
 import (
 	"image"
+	"strings"
 
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/fogleman/gg"
@@ -145,6 +146,38 @@ func (ctx *Ctx) drawCheckbox(inputId, originX, originY int, isSelected bool) g14
 		ctx.ggCtx.SetHexColor("#444")
 		ctx.ggCtx.DrawRectangle(float64(originX)+4, float64(originY)+4, float64(width)-8, float64(height)-8)
 		ctx.ggCtx.Fill()
+	}
+	return entryRect
+}
+
+func (ctx *Ctx) drawTextInput(inputId, originX, originY, inputWidth, height int, values string) g143.Rect {
+	scrollRectWidth := 20
+	newWidth := inputWidth - scrollRectWidth - 10
+	ctx.ggCtx.SetHexColor(fontColor)
+	ctx.ggCtx.DrawRectangle(float64(originX), float64(originY), float64(newWidth), float64(height))
+	ctx.ggCtx.Fill()
+
+	ctx.ggCtx.SetHexColor("#fff")
+	ctx.ggCtx.DrawRectangle(float64(originX)+2, float64(originY)+2, float64(newWidth)-4, float64(height)-4)
+	ctx.ggCtx.Fill()
+
+	// draw up and down buttons
+	scrollRectX := originX + newWidth
+	ctx.ggCtx.SetHexColor("#444")
+	ctx.ggCtx.DrawRectangle(float64(scrollRectX)+10, float64(originY), float64(scrollRectWidth),
+		float64(scrollRectWidth)*2)
+	ctx.ggCtx.Fill()
+	ctx.ggCtx.SetHexColor("#444")
+	ctx.ggCtx.DrawRectangle(float64(scrollRectX)+10, float64(originY+height-(scrollRectWidth*2)), float64(scrollRectWidth),
+		float64(scrollRectWidth)*2)
+	ctx.ggCtx.Fill()
+
+	entryRect := g143.Rect{Width: newWidth, Height: height, OriginX: originX, OriginY: originY}
+	(*ctx.ObjCoords)[inputId] = entryRect
+
+	if len(strings.TrimSpace(values)) != 0 {
+		ctx.ggCtx.SetHexColor("#444")
+		ctx.ggCtx.DrawString(values, float64(originX+15), float64(originY)+FontSize)
 	}
 	return entryRect
 }

@@ -19,8 +19,11 @@ const (
 	WK_AddFormBtn = 21
 	WK_OpenWDBtn  = 22
 
-	FD_AddBtn   = 31
-	FD_CloseBtn = 32
+	FD_AddBtn             = 31
+	FD_CloseBtn           = 32
+	FD_NameInput          = 33
+	FD_LabelInput         = 34
+	FD_SelectOptionsInput = 35
 
 	ProgTitle = "forms814: a tool for website developers on records collection"
 )
@@ -44,6 +47,12 @@ var (
 	NameInputEnteredTxt string
 
 	cursorEventsCount = 0
+
+	supportedFields = []string{"number", "string", "text", "email", "select", "date",
+		"datetime"}
+	attributes = []string{"required", "unique", "nindex"}
+
+	FD_SelectedInput = 0
 )
 
 type ToSortProject struct {
