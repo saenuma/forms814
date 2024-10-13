@@ -83,6 +83,28 @@ func DrawWorkView(window *glfw.Window, page int) {
 	theCtx.ggCtx.DrawRectangle(10, float64(demarcY), float64(wWidth)-20, 2)
 	theCtx.ggCtx.Fill()
 
+	currentX, currentY := 20, demarcY+15
+	formObjects := GetPageFormObjects(page)
+	for j, fObj := range formObjects {
+		i := (PageSize * (page - 1)) + j
+
+		theCtx.ggCtx.SetHexColor("#444")
+		str2 := fmt.Sprintf("%d. label: %s name: %s fieldtype: %s attributes: %s",
+			i+1, fObj["label"],
+			fObj["name"], fObj["fieldtype"], fObj["attributes"])
+		theCtx.ggCtx.DrawString(str2, float64(currentX), float64(currentY)+FontSize)
+
+		addBeforeBtnId := 2000 + 1 + i
+		aBBRect := theCtx.drawButtonA(addBeforeBtnId, currentX, currentY+30, "add before", "#fff", "#4E962D")
+		eFOBX, _ := nextHorizontalCoords(aBBRect, 20)
+		eFOBtnId := 3000 + i + 1
+		eFOBRect := theCtx.drawButtonA(eFOBtnId, eFOBX, currentY+30, "edit", "#fff", "#968D2D")
+		dFOBX, _ := nextHorizontalCoords(eFOBRect, 20)
+		dFOBtnId := 4000 + i + 1
+		theCtx.drawButtonA(dFOBtnId, dFOBX, currentY+30, "delete", "#fff", "#962D2D")
+		currentY += 70
+	}
+
 	// send the frame to glfw window
 	g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
 	window.SwapBuffers()

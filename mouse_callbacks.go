@@ -124,6 +124,44 @@ func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, acti
 		ExternalLaunch(rootPath)
 
 	}
+
+	// for generated buttons
+	if widgetCode > 2000 && widgetCode < 3000 {
+		// add before selection
+		objNum := widgetCode - 2000 - 1
+		IsInsertBeforeDialog = true
+		ToInsertBefore = objNum
+
+		DrawFormDialog(window, CurrentWindowFrame)
+		window.SetMouseButtonCallback(fdMouseBtnCallback)
+		window.SetKeyCallback(FDKeyCallback)
+		window.SetCharCallback(FDCharCallback)
+		window.SetScrollCallback(nil)
+		window.SetCursorPosCallback(getHoverCB(FDObjCoords))
+
+	} else if widgetCode > 3000 && widgetCode < 4000 {
+		// edit selection
+		objNum := widgetCode - 2000 - 1
+		ToUpdateInstrNum = objNum
+		IsUpdateDialog = true
+
+		DrawFormDialog(window, CurrentWindowFrame)
+		window.SetMouseButtonCallback(fdMouseBtnCallback)
+		window.SetKeyCallback(FDKeyCallback)
+		window.SetCharCallback(FDCharCallback)
+		window.SetScrollCallback(nil)
+		window.SetCursorPosCallback(getHoverCB(FDObjCoords))
+
+	} else if widgetCode > 4000 && widgetCode < 5000 {
+		// delete from instructions slice
+		objNum := widgetCode - 4000 - 1
+		FormObjects = slices.Delete(FormObjects, objNum, objNum+1)
+
+		WKObjCoords = make(map[int]g143.Rect)
+		DrawWorkView(window, CurrentPage)
+		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
+
+	}
 }
 
 func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
