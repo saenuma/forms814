@@ -1,0 +1,6 @@
+[Desktop Entry]
+Version=1.3.0
+Type=Application
+Name=Forms814
+Exec=forms814
+Icon=${SNAP}/meta/gui/forms814.png
