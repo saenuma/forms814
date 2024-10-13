@@ -49,3 +49,72 @@ func ProjKeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glf
 	// save the frame
 	CurrentWindowFrame = theCtx.ggCtx.Image()
 }
+
+func FDKeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
+	if action != glfw.Release {
+		return
+	}
+
+	wWidth, wHeight := window.GetSize()
+
+	if FD_SelectedInput == FD_NameInput {
+		val := EnteredTxts[FD_NameInput]
+		if key == glfw.KeyBackspace && len(EnteredTxts[FD_NameInput]) != 0 {
+			EnteredTxts[FD_NameInput] = val[:len(val)-1]
+		} else if key == glfw.KeyMinus && mods == glfw.ModShift {
+			EnteredTxts[FD_NameInput] = val + "_"
+		} else {
+			EnteredTxts[FD_NameInput] = val + glfw.GetKeyName(key, scancode)
+		}
+
+		nIRS := FDObjCoords[FD_NameInput]
+		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
+		theCtx.drawInput(FD_NameInput, nIRS.OriginX, nIRS.OriginY, nIRS.Width, EnteredTxts[FD_NameInput], true)
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
+
+	} else if FD_SelectedInput == FD_LabelInput {
+		val := EnteredTxts[FD_LabelInput]
+		if key == glfw.KeyBackspace && len(EnteredTxts[FD_LabelInput]) != 0 {
+			EnteredTxts[FD_LabelInput] = val[:len(val)-1]
+		}
+
+		sIRect := FDObjCoords[FD_LabelInput]
+		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
+		theCtx.drawInput(FD_LabelInput, sIRect.OriginX, sIRect.OriginY, sIRect.Width, EnteredTxts[FD_LabelInput], true)
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
+	}
+
+}
+
+func FDCharCallback(window *glfw.Window, char rune) {
+	wWidth, wHeight := window.GetSize()
+
+	if FD_SelectedInput == FD_LabelInput {
+		val := EnteredTxts[FD_LabelInput]
+		EnteredTxts[FD_LabelInput] = val + string(char)
+
+		sIRect := FDObjCoords[FD_LabelInput]
+		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
+		theCtx.drawInput(FD_LabelInput, sIRect.OriginX, sIRect.OriginY, sIRect.Width, EnteredTxts[FD_LabelInput], true)
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
+	}
+
+}

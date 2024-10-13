@@ -113,7 +113,8 @@ func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, acti
 		// tmpFrame = CurrentWindowFrame
 		DrawFormDialog(window, CurrentWindowFrame)
 		window.SetMouseButtonCallback(fdMouseBtnCallback)
-		// window.SetKeyCallback(VaikeyCallback)
+		window.SetKeyCallback(FDKeyCallback)
+		window.SetCharCallback(FDCharCallback)
 		window.SetScrollCallback(nil)
 		window.SetCursorPosCallback(getHoverCB(FDObjCoords))
 
