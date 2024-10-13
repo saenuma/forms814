@@ -152,7 +152,6 @@ func (ctx *Ctx) drawCheckbox(inputId, originX, originY int, isSelected bool) g14
 }
 
 func (ctx *Ctx) drawTextInput(inputId, originX, originY, inputWidth, height int, values string, isSelected bool) g143.Rect {
-	scrollRectWidth := 20
 	if isSelected {
 		ctx.ggCtx.SetHexColor("#C3983D")
 	} else {
@@ -165,23 +164,17 @@ func (ctx *Ctx) drawTextInput(inputId, originX, originY, inputWidth, height int,
 	ctx.ggCtx.DrawRectangle(float64(originX)+2, float64(originY)+2, float64(inputWidth)-4, float64(height)-4)
 	ctx.ggCtx.Fill()
 
-	// draw up and down buttons
-	scrollRectX := originX + inputWidth
-	ctx.ggCtx.SetHexColor("#444")
-	ctx.ggCtx.DrawRectangle(float64(scrollRectX)+10, float64(originY), float64(scrollRectWidth),
-		float64(scrollRectWidth)*2)
-	ctx.ggCtx.Fill()
-	ctx.ggCtx.SetHexColor("#444")
-	ctx.ggCtx.DrawRectangle(float64(scrollRectX)+10, float64(originY+height-(scrollRectWidth*2)), float64(scrollRectWidth),
-		float64(scrollRectWidth)*2)
-	ctx.ggCtx.Fill()
-
 	entryRect := g143.Rect{Width: inputWidth, Height: height, OriginX: originX, OriginY: originY}
 	(*ctx.ObjCoords)[inputId] = entryRect
 
 	if len(strings.TrimSpace(values)) != 0 {
-		ctx.ggCtx.SetHexColor("#444")
-		ctx.ggCtx.DrawString(values, float64(originX+15), float64(originY)+FontSize)
+		strs := strings.Split(values, "\n")
+		currentY := originY
+		for _, str := range strs {
+			ctx.ggCtx.SetHexColor("#444")
+			ctx.ggCtx.DrawString(str, float64(originX+15), float64(currentY)+FontSize)
+			currentY += FontSize + 5
+		}
 	}
 	return entryRect
 }

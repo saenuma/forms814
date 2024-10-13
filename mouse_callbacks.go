@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strings"
 
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -71,7 +72,7 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 		rawBytes, _ := os.ReadFile(inPath)
 		json.Unmarshal(rawBytes, &obj)
 
-		Instructions = append(Instructions, obj...)
+		FormObjects = append(FormObjects, obj...)
 
 		// move to work view
 		DrawWorkView(window, 1)
@@ -195,6 +196,59 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 
 		// save the frame
 		CurrentWindowFrame = theCtx.ggCtx.Image()
+
+	case FD_AddBtn:
+		if IsUpdateDialog {
+		} else {
+			for _, obj := range FormObjects {
+				if obj["name"] == EnteredTxts[FD_NameInput] {
+					return
+				}
+			}
+			item := map[string]string{
+				"name":      EnteredTxts[FD_NameInput],
+				"label":     EnteredTxts[FD_LabelInput],
+				"fieldtype": SelectedFieldType,
+			}
+
+			for _, v := range item {
+				if v == "" {
+					return
+				}
+			}
+
+			attribs := make([]string, 0)
+			for k, v := range AttribState {
+				if v {
+					attribs = append(attribs, k)
+				}
+			}
+
+			item["attributes"] = strings.Join(attribs, ";")
+			if SelectedFieldType == "select" && len(EnteredTxts[FD_SelectOptionsInput]) != 0 {
+				item["select_options"] = EnteredTxts[FD_SelectOptionsInput]
+			}
+
+			if IsInsertBeforeDialog {
+				FormObjects = slices.Insert(FormObjects, ToInsertBefore, item)
+				IsInsertBeforeDialog = false
+			} else {
+				FormObjects = append(FormObjects, item)
+			}
+		}
+
+		EnteredTxts = map[int]string{
+			FD_LabelInput: "", FD_NameInput: "", FD_SelectOptionsInput: "",
+		}
+		AttribState = make(map[string]bool)
+
+		DrawWorkView(window, TotalPages())
+		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
+
+		// register the ViewMain mouse callback
+		window.SetMouseButtonCallback(workViewMouseBtnCallback)
+		// unregister the keyCallback
+		window.SetKeyCallback(nil)
 
 	default:
 		FD_SelectedInput = 0

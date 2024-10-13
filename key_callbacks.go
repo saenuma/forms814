@@ -17,6 +17,8 @@ func ProjKeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glf
 
 	if key == glfw.KeyBackspace && len(NameInputEnteredTxt) != 0 {
 		NameInputEnteredTxt = NameInputEnteredTxt[:len(NameInputEnteredTxt)-1]
+	} else if key == glfw.KeyMinus && mods == glfw.ModShift {
+		NameInputEnteredTxt = NameInputEnteredTxt + "_"
 	} else if key == glfw.KeySpace {
 		NameInputEnteredTxt += " "
 	} else if key == glfw.KeyEnter && len(NameInputEnteredTxt) != 0 {
@@ -94,6 +96,26 @@ func FDKeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glfw.
 
 		// save the frame
 		CurrentWindowFrame = theCtx.ggCtx.Image()
+
+	} else if FD_SelectedInput == FD_SelectOptionsInput {
+		val := EnteredTxts[FD_SelectOptionsInput]
+		if key == glfw.KeyBackspace && len(val) != 0 {
+			EnteredTxts[FD_SelectOptionsInput] = val[:len(val)-1]
+		} else if key == glfw.KeyEnter {
+			EnteredTxts[FD_SelectOptionsInput] = val + "\n"
+		}
+
+		sIRect := FDObjCoords[FD_SelectOptionsInput]
+		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
+		theCtx.drawTextInput(FD_SelectOptionsInput, sIRect.OriginX, sIRect.OriginY, sIRect.Width,
+			sIRect.Height, EnteredTxts[FD_SelectOptionsInput], true)
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
 	}
 
 }
@@ -108,6 +130,21 @@ func FDCharCallback(window *glfw.Window, char rune) {
 		sIRect := FDObjCoords[FD_LabelInput]
 		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
 		theCtx.drawInput(FD_LabelInput, sIRect.OriginX, sIRect.OriginY, sIRect.Width, EnteredTxts[FD_LabelInput], true)
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
+	} else if FD_SelectedInput == FD_SelectOptionsInput {
+		val := EnteredTxts[FD_SelectOptionsInput]
+		EnteredTxts[FD_SelectOptionsInput] = val + string(char)
+
+		sIRect := FDObjCoords[FD_SelectOptionsInput]
+		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
+		theCtx.drawTextInput(FD_SelectOptionsInput, sIRect.OriginX, sIRect.OriginY, sIRect.Width,
+			sIRect.Height, EnteredTxts[FD_SelectOptionsInput], true)
 
 		// send the frame to glfw window
 		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())

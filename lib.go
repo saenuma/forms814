@@ -78,7 +78,7 @@ func IsKeyNumeric(key glfw.Key) bool {
 }
 
 func SaveProjectCloseCallback(w *glfw.Window) {
-	jsonBytes, _ := json.Marshal(Instructions)
+	jsonBytes, _ := json.Marshal(FormObjects)
 	rootPath, _ := GetRootPath()
 	outPath := filepath.Join(rootPath, ProjectName)
 	os.WriteFile(outPath, jsonBytes, 0777)
@@ -109,22 +109,22 @@ func GetProjectFiles() []ToSortProject {
 }
 
 func TotalPages() int {
-	return int(math.Ceil(float64(len(Instructions)) / float64(PageSize)))
+	return int(math.Ceil(float64(len(FormObjects)) / float64(PageSize)))
 }
 
-func GetPageInstructions(page int) []map[string]string {
+func GetPageFormObjects(page int) []map[string]string {
 	beginIndex := (page - 1) * PageSize
 	endIndex := beginIndex + PageSize
 
-	var retInstructions []map[string]string
-	if len(Instructions) <= PageSize {
-		retInstructions = Instructions
+	var retFormObjects []map[string]string
+	if len(FormObjects) <= PageSize {
+		retFormObjects = FormObjects
 	} else if page == 1 {
-		retInstructions = Instructions[:PageSize]
-	} else if endIndex > len(Instructions) {
-		retInstructions = Instructions[beginIndex:]
+		retFormObjects = FormObjects[:PageSize]
+	} else if endIndex > len(FormObjects) {
+		retFormObjects = FormObjects[beginIndex:]
 	} else {
-		retInstructions = Instructions[beginIndex:endIndex]
+		retFormObjects = FormObjects[beginIndex:endIndex]
 	}
-	return retInstructions
+	return retFormObjects
 }

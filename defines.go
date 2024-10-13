@@ -30,7 +30,6 @@ const (
 
 var (
 	CurrentWindowFrame image.Image
-	Instructions       []map[string]string
 	ProjectName        string
 	ToUpdateInstrNum   int // for updating an instruction
 	IsUpdateDialog     bool
@@ -59,6 +58,8 @@ var (
 	}
 	AttribState       map[string]bool = make(map[string]bool)
 	SelectedFieldType string
+
+	FormObjects []map[string]string
 )
 
 type ToSortProject struct {
