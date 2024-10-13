@@ -141,7 +141,7 @@ func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, acti
 
 	} else if widgetCode > 3000 && widgetCode < 4000 {
 		// edit selection
-		objNum := widgetCode - 2000 - 1
+		objNum := widgetCode - 3000 - 1
 		ToUpdateInstrNum = objNum
 		IsUpdateDialog = true
 
@@ -236,37 +236,39 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		CurrentWindowFrame = theCtx.ggCtx.Image()
 
 	case FD_AddBtn:
+		for _, obj := range FormObjects {
+			if obj["name"] == EnteredTxts[FD_NameInput] {
+				return
+			}
+		}
+		item := map[string]string{
+			"name":      EnteredTxts[FD_NameInput],
+			"label":     EnteredTxts[FD_LabelInput],
+			"fieldtype": SelectedFieldType,
+		}
+
+		for _, v := range item {
+			if v == "" {
+				return
+			}
+		}
+
+		attribs := make([]string, 0)
+		for k, v := range AttribState {
+			if v {
+				attribs = append(attribs, k)
+			}
+		}
+
+		item["attributes"] = strings.Join(attribs, ";")
+		if SelectedFieldType == "select" && len(EnteredTxts[FD_SelectOptionsInput]) != 0 {
+			item["select_options"] = EnteredTxts[FD_SelectOptionsInput]
+		}
+
 		if IsUpdateDialog {
+			FormObjects[ToUpdateInstrNum] = item
+			IsUpdateDialog = false
 		} else {
-			for _, obj := range FormObjects {
-				if obj["name"] == EnteredTxts[FD_NameInput] {
-					return
-				}
-			}
-			item := map[string]string{
-				"name":      EnteredTxts[FD_NameInput],
-				"label":     EnteredTxts[FD_LabelInput],
-				"fieldtype": SelectedFieldType,
-			}
-
-			for _, v := range item {
-				if v == "" {
-					return
-				}
-			}
-
-			attribs := make([]string, 0)
-			for k, v := range AttribState {
-				if v {
-					attribs = append(attribs, k)
-				}
-			}
-
-			item["attributes"] = strings.Join(attribs, ";")
-			if SelectedFieldType == "select" && len(EnteredTxts[FD_SelectOptionsInput]) != 0 {
-				item["select_options"] = EnteredTxts[FD_SelectOptionsInput]
-			}
-
 			if IsInsertBeforeDialog {
 				FormObjects = slices.Insert(FormObjects, ToInsertBefore, item)
 				IsInsertBeforeDialog = false

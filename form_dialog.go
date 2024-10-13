@@ -2,6 +2,8 @@ package main
 
 import (
 	"image"
+	"slices"
+	"strings"
 
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -32,7 +34,11 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	// Add Form
 	aFLX, aFLY := dialogOriginX+20, dialogOriginY+20
 	theCtx.ggCtx.SetHexColor("#444")
-	theCtx.ggCtx.DrawString("Add Form Configuration", float64(aFLX), float64(aFLY)+FontSize)
+	str1 := "Add Form Configuration"
+	if IsUpdateDialog {
+		str1 = "Edit Form Configuration"
+	}
+	theCtx.ggCtx.DrawString(str1, float64(aFLX), float64(aFLY)+FontSize)
 
 	addBtnOriginX := dialogWidth + dialogOriginX - 160
 	addBtnRect := theCtx.drawButtonA(FD_AddBtn, addBtnOriginX, dialogOriginY+20, "Add", "#fff", "#56845A")
@@ -45,19 +51,35 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	theCtx.ggCtx.DrawString("field name: ", float64(aFLX), float64(fNLY)+FontSize)
 	fNLW, _ := theCtx.ggCtx.MeasureString("field name:")
 
+	var val string
+	if IsUpdateDialog {
+		val = FormObjects[ToUpdateInstrNum]["name"]
+		EnteredTxts[FD_NameInput] = val
+	}
 	fNIX := aFLX + int(fNLW) + 20
-	fNIRect := theCtx.drawInput(FD_NameInput, fNIX, fNLY, 250, "", false)
+	fNIRect := theCtx.drawInput(FD_NameInput, fNIX, fNLY, 250, val, false)
 
 	currentX, currentY := fNIRect.OriginX+fNIRect.Width+30, fNLY
 	// attributes checkboxes
-	for i, field := range attributes {
+	var cIRect g143.Rect
+	for i, attribName := range attributes {
 		cBtnId := 200 + i + 1
-		cIRect := theCtx.drawCheckbox(cBtnId, currentX, currentY, false)
+		if IsUpdateDialog {
+			selectedAttribs := strings.Split(FormObjects[ToUpdateInstrNum]["attributes"], ";")
+			selected := false
+			if slices.Index(selectedAttribs, attribName) != -1 {
+				selected = true
+			}
+			cIRect = theCtx.drawCheckbox(cBtnId, currentX, currentY, selected)
+			AttribState[attribName] = selected
+		} else {
+			cIRect = theCtx.drawCheckbox(cBtnId, currentX, currentY, false)
+		}
 		cILX, _ := nextHorizontalCoords(cIRect, 10)
 
 		theCtx.ggCtx.SetHexColor("#444")
-		theCtx.ggCtx.DrawString(field, float64(cILX), float64(currentY)+FontSize)
-		fieldW, _ := theCtx.ggCtx.MeasureString(field)
+		theCtx.ggCtx.DrawString(attribName, float64(cILX), float64(currentY)+FontSize)
+		fieldW, _ := theCtx.ggCtx.MeasureString(attribName)
 		currentX = cILX + int(fieldW) + 20
 	}
 
@@ -68,7 +90,12 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	fLLW, _ := theCtx.ggCtx.MeasureString("field label:")
 	fLIX := aFLX + int(fLLW) + 20
 	fLIW := dialogWidth - int(fLLW) - 80
-	fLIRect := theCtx.drawInput(FD_LabelInput, fLIX, fLLY, fLIW, "", false)
+	var val3 string
+	if IsUpdateDialog {
+		val3 = FormObjects[ToUpdateInstrNum]["label"]
+		EnteredTxts[FD_LabelInput] = val3
+	}
+	fLIRect := theCtx.drawInput(FD_LabelInput, fLIX, fLLY, fLIW, val3, false)
 
 	// field type
 	theCtx.ggCtx.SetHexColor("#444")
@@ -78,7 +105,14 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	currentX, currentY = aFLX+int(fTLW)+20, fTLY
 	for i, field := range supportedFields {
 		cBtnId := 300 + i + 1
-		cIRect := theCtx.drawCheckbox(cBtnId, currentX, currentY, false)
+		var cIRect g143.Rect
+		if IsUpdateDialog {
+			SelectedFieldType = FormObjects[ToUpdateInstrNum]["fieldtype"]
+			selected := (field == SelectedFieldType)
+			cIRect = theCtx.drawCheckbox(cBtnId, currentX, currentY, selected)
+		} else {
+			cIRect = theCtx.drawCheckbox(cBtnId, currentX, currentY, false)
+		}
 		cILX, _ := nextHorizontalCoords(cIRect, 10)
 
 		theCtx.ggCtx.SetHexColor("#444")
@@ -91,7 +125,12 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	theCtx.ggCtx.SetHexColor("#444")
 	sFOLY := currentY + 40
 	theCtx.ggCtx.DrawString("select field options:", float64(aFLX), float64(sFOLY)+FontSize)
-	theCtx.drawTextInput(FD_SelectOptionsInput, aFLX, sFOLY+30, 400, 300, "", false)
+	var val2 string
+	if IsUpdateDialog {
+		val2 = FormObjects[ToUpdateInstrNum]["select_options"]
+		EnteredTxts[FD_SelectOptionsInput] = val2
+	}
+	theCtx.drawTextInput(FD_SelectOptionsInput, aFLX, sFOLY+30, 400, 300, val2, false)
 
 	// send the frame to glfw window
 	g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
