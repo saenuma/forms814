@@ -91,7 +91,7 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	theCtx.ggCtx.SetHexColor("#444")
 	sFOLY := currentY + 40
 	theCtx.ggCtx.DrawString("select field options:", float64(aFLX), float64(sFOLY)+FontSize)
-	theCtx.drawTextInput(FD_SelectOptionsInput, aFLX, sFOLY+30, 400, 300, "")
+	theCtx.drawTextInput(FD_SelectOptionsInput, aFLX, sFOLY+30, 400, 300, "", false)
 
 	// send the frame to glfw window
 	g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())

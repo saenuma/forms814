@@ -53,6 +53,12 @@ var (
 	attributes = []string{"required", "unique", "nindex"}
 
 	FD_SelectedInput = 0
+
+	EnteredTxts map[int]string = map[int]string{
+		FD_LabelInput: "", FD_NameInput: "", FD_SelectOptionsInput: "",
+	}
+	AttribState       map[string]bool = make(map[string]bool)
+	SelectedFieldType string
 )
 
 type ToSortProject struct {

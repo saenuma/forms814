@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -132,14 +134,14 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 	xPosInt := int(xPos)
 	yPosInt := int(yPos)
 
-	// wWidth, wHeight := window.GetSize()
+	wWidth, wHeight := window.GetSize()
 
-	// var widgetRS g143.Rect
+	var widgetRS g143.Rect
 	var widgetCode int
 
 	for code, RS := range FDObjCoords {
 		if g143.InRect(RS, xPosInt, yPosInt) {
-			// widgetRS = RS
+			widgetRS = RS
 			widgetCode = code
 			// break
 		}
@@ -162,5 +164,84 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		// window.SetScrollCallback(FirstUIScrollCallback)
 		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
 
+	case FD_NameInput, FD_LabelInput, FD_SelectOptionsInput:
+		FD_SelectedInput = widgetCode
+
+		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
+		if widgetCode == FD_SelectOptionsInput {
+			theCtx.drawTextInput(widgetCode, widgetRS.OriginX, widgetRS.OriginY, widgetRS.Width,
+				widgetRS.Height, EnteredTxts[widgetCode], true)
+		} else {
+			theCtx.drawInput(widgetCode, widgetRS.OriginX, widgetRS.OriginY, widgetRS.Width, EnteredTxts[widgetCode], true)
+		}
+
+		// disable other inputs
+		allInputs := []int{FD_NameInput, FD_LabelInput, FD_SelectOptionsInput}
+		index := slices.Index(allInputs, widgetCode)
+		leftInputs := slices.Delete(slices.Clone(allInputs), index, index+1)
+		for _, inputId := range leftInputs {
+			inputRS := FDObjCoords[inputId]
+			if inputId == FD_SelectOptionsInput {
+				theCtx.drawTextInput(inputId, inputRS.OriginX, inputRS.OriginY, inputRS.Width,
+					inputRS.Height, EnteredTxts[inputId], false)
+			} else {
+				theCtx.drawInput(inputId, inputRS.OriginX, inputRS.OriginY, inputRS.Width, EnteredTxts[inputId], false)
+			}
+		}
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
+
+	default:
+		FD_SelectedInput = 0
+
 	}
+
+	// for generated buttons
+	if widgetCode > 200 && widgetCode < 300 {
+		attribId := widgetCode - 200 - 1
+		attrib := attributes[attribId]
+
+		if value, ok := AttribState[attrib]; ok {
+			AttribState[attrib] = !value
+		} else {
+			AttribState[attrib] = true
+		}
+
+		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
+		theCtx.drawCheckbox(widgetCode, widgetRS.OriginX, widgetRS.OriginY, AttribState[attrib])
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
+
+	} else if widgetCode > 300 && widgetCode < 400 {
+		fTypeId := widgetCode - 300 - 1
+		fType := supportedFields[fTypeId]
+
+		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
+		for i := range supportedFields {
+			cBtnId := 300 + i + 1
+			cBtnRect := FDObjCoords[cBtnId]
+			theCtx.drawCheckbox(cBtnId, cBtnRect.OriginX, cBtnRect.OriginY, false)
+		}
+
+		theCtx.drawCheckbox(widgetCode, widgetRS.OriginX, widgetRS.OriginY, true)
+
+		SelectedFieldType = fType
+		fmt.Println(SelectedFieldType)
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
+
+	}
+
 }
