@@ -23,7 +23,7 @@ func ProjKeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glf
 		// create file
 		rootPath, _ := GetRootPath()
 
-		ProjectName = NameInputEnteredTxt + ".v3p"
+		ProjectName = NameInputEnteredTxt + ".f8p"
 		outPath := filepath.Join(rootPath, ProjectName)
 		os.WriteFile(outPath, []byte(""), 0777)
 
