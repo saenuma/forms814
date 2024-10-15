@@ -24,6 +24,9 @@ const (
 	FD_NameInput          = 33
 	FD_LabelInput         = 34
 	FD_SelectOptionsInput = 35
+	FD_LinkedTableInput = 36
+	FD_MinValueInput = 37
+	FD_MaxValueInput = 38
 
 	ProgTitle = "forms814: a tool for website developers on records collection"
 )

@@ -136,9 +136,53 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 		val2 = FormObjects[ToUpdateInstrNum]["select_options"]
 		EnteredTxts[FD_SelectOptionsInput] = val2
 	}
-	theCtx.drawTextInput(FD_SelectOptionsInput, aFLX, sFOLY+30, 400, 250, val2, false)
+	sOIRect := theCtx.drawTextInput(FD_SelectOptionsInput, aFLX, sFOLY+30, 400, 250, val2, false)
 
 	// for number fields
+	theCtx.ggCtx.SetHexColor("#444")
+	nFOLX, _ := nextHorizontalCoords(sOIRect, 40)
+	theCtx.ggCtx.DrawString("number field options:", float64(nFOLX), float64(sFOLY+FontSize))
+
+	lTLY := sFOLY + 40
+	theCtx.ggCtx.SetHexColor("#444")
+	theCtx.ggCtx.DrawString("linked table:", float64(nFOLX), float64(lTLY+FontSize))
+	lTLW, _ := theCtx.ggCtx.MeasureString("linked table:")
+
+	var val4 string
+	if IsUpdateDialog {
+		val4 = FormObjects[ToUpdateInstrNum]["linked_table"]
+		EnteredTxts[FD_LinkedTableInput] = val4
+	}
+	lTIX := nFOLX + int(lTLW) + 20
+	lTIRect := theCtx.drawInput(FD_LinkedTableInput, lTIX, lTLY, 250, val4, false)
+
+	// min value input
+	_, mVLY := nextVerticalCoords(lTIRect, 10)
+	theCtx.ggCtx.SetHexColor("#444")
+	theCtx.ggCtx.DrawString("min value:", float64(nFOLX), float64(mVLY)+FontSize)
+	mVLW, _ := theCtx.ggCtx.MeasureString("min value:")
+
+	var val5 string
+	if IsUpdateDialog {
+		val5 = FormObjects[ToUpdateInstrNum]["min_value"]
+		EnteredTxts[FD_MinValueInput] = val5
+	}
+	mVIX := nFOLX + int(mVLW) + 20
+	mVIRect := theCtx.drawInput(FD_MinValueInput, mVIX, mVLY, 250, val5, false)
+
+	// max value input
+	_, mV2LY := nextVerticalCoords(mVIRect, 15)
+	theCtx.ggCtx.SetHexColor("#444")
+	theCtx.ggCtx.DrawString("max value:", float64(nFOLX), float64(mV2LY)+FontSize)
+
+	var val6 string
+	if IsUpdateDialog {
+		val6 = FormObjects[ToUpdateInstrNum]["max_value"]
+		EnteredTxts[FD_MaxValueInput] = val6
+	}
+	mV2IX := nFOLX + int(mVLW) + 20
+	theCtx.drawInput(FD_MaxValueInput, mV2IX, mV2LY, 250, val6, false)
+
 	// send the frame to glfw window
 	g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
 	window.SwapBuffers()
