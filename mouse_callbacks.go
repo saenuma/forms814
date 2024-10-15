@@ -203,7 +203,7 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		// window.SetScrollCallback(FirstUIScrollCallback)
 		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
 
-	case FD_NameInput, FD_LabelInput, FD_SelectOptionsInput:
+	case FD_NameInput, FD_LabelInput, FD_SelectOptionsInput, FD_LinkedTableInput, FD_MinValueInput, FD_MaxValueInput:
 		FD_SelectedInput = widgetCode
 
 		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
@@ -215,7 +215,8 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		}
 
 		// disable other inputs
-		allInputs := []int{FD_NameInput, FD_LabelInput, FD_SelectOptionsInput}
+		allInputs := []int{FD_NameInput, FD_LabelInput, FD_SelectOptionsInput, 
+			FD_LinkedTableInput, FD_MinValueInput, FD_MaxValueInput}
 		index := slices.Index(allInputs, widgetCode)
 		leftInputs := slices.Delete(slices.Clone(allInputs), index, index+1)
 		for _, inputId := range leftInputs {
@@ -279,6 +280,7 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 
 		EnteredTxts = map[int]string{
 			FD_LabelInput: "", FD_NameInput: "", FD_SelectOptionsInput: "",
+			FD_LinkedTableInput: "", FD_MinValueInput: "", FD_MaxValueInput: "",
 		}
 		AttribState = make(map[string]bool)
 
@@ -289,9 +291,6 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		window.SetMouseButtonCallback(workViewMouseBtnCallback)
 		// unregister the keyCallback
 		window.SetKeyCallback(nil)
-
-	default:
-		FD_SelectedInput = 0
 
 	}
 

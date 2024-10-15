@@ -116,6 +116,51 @@ func FDKeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glfw.
 
 		// save the frame
 		CurrentWindowFrame = theCtx.ggCtx.Image()
+
+	} else if FD_SelectedInput == FD_LinkedTableInput {
+		val := EnteredTxts[FD_LinkedTableInput]
+		if key == glfw.KeyBackspace && len(val) != 0 {
+			EnteredTxts[FD_LinkedTableInput] = val[:len(val)-1]
+		} else if key == glfw.KeyMinus && mods == glfw.ModShift {
+			EnteredTxts[FD_LinkedTableInput] = val + "_"
+		} else {
+			EnteredTxts[FD_LinkedTableInput] = val + glfw.GetKeyName(key, scancode)
+		}
+
+		nIRS := FDObjCoords[FD_LinkedTableInput]
+		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
+		theCtx.drawInput(FD_LinkedTableInput, nIRS.OriginX, nIRS.OriginY, nIRS.Width, EnteredTxts[FD_LinkedTableInput], true)
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
+
+	} else if FD_SelectedInput == FD_MinValueInput || FD_SelectedInput == FD_MaxValueInput {
+		inputCode := FD_MinValueInput
+		if FD_SelectedInput == FD_MaxValueInput {
+			inputCode = FD_MaxValueInput
+		}
+		val := EnteredTxts[inputCode]
+		if IsKeyNumeric(key) {
+			EnteredTxts[inputCode] = val + glfw.GetKeyName(key, scancode)
+		} else if key == glfw.KeyBackspace && len(val) != 0 {
+			EnteredTxts[inputCode] = val[:len(val)-1]
+		}
+
+		nIRS := FDObjCoords[inputCode]
+		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
+		theCtx.drawInput(inputCode, nIRS.OriginX, nIRS.OriginY, nIRS.Width, EnteredTxts[inputCode], true)
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
+
 	}
 
 }
