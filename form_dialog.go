@@ -118,7 +118,13 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 		theCtx.ggCtx.SetHexColor("#444")
 		theCtx.ggCtx.DrawString(field, float64(cILX), float64(currentY)+FontSize)
 		fieldW, _ := theCtx.ggCtx.MeasureString(field)
-		currentX = cILX + int(fieldW) + 20
+		newX := cILX + int(fieldW) + 20
+		if newX > (dialogOriginX+dialogWidth - 10 - int(fieldW)) {
+			currentY += 40
+			currentX = dialogOriginX+20+int(fTLW)+20
+		} else {
+			currentX = newX
+		}
 	}
 
 	// for select fields
@@ -130,8 +136,9 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 		val2 = FormObjects[ToUpdateInstrNum]["select_options"]
 		EnteredTxts[FD_SelectOptionsInput] = val2
 	}
-	theCtx.drawTextInput(FD_SelectOptionsInput, aFLX, sFOLY+30, 400, 300, val2, false)
+	theCtx.drawTextInput(FD_SelectOptionsInput, aFLX, sFOLY+30, 400, 250, val2, false)
 
+	// for number fields
 	// send the frame to glfw window
 	g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
 	window.SwapBuffers()
