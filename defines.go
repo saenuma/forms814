@@ -49,7 +49,7 @@ var (
 
 	supportedFields = []string{"number", "string", "text", "email", "select", "date",
 		"datetime"}
-	attributes = []string{"required", "unique", "nindex"}
+	attributes = []string{"required", "unique", "nindex", "hidden"}
 
 	FD_SelectedInput = 0
 
