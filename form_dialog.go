@@ -12,7 +12,6 @@ import (
 
 func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	FDObjCoords = make(map[int]g143.Rect)
-	// InputsStore = make(map[string]string)
 
 	wWidth, wHeight := window.GetSize()
 	// background image

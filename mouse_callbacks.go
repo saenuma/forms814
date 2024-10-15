@@ -238,16 +238,18 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 
 	case FD_AddBtn:
 		for _, obj := range FormObjects {
-			if obj["name"] == EnteredTxts[FD_NameInput] {
+			if obj["name"] == EnteredTxts[FD_NameInput] && !IsUpdateDialog {
 				return
 			}
 		}
+		
 		item := map[string]string{
 			"name":      EnteredTxts[FD_NameInput],
 			"label":     EnteredTxts[FD_LabelInput],
 			"fieldtype": SelectedFieldType,
 		}
 
+		// enforce the keys: name, label, fieldtype
 		for _, v := range item {
 			if v == "" {
 				return
@@ -264,6 +266,16 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		item["attributes"] = strings.Join(attribs, ";")
 		if SelectedFieldType == "select" && len(EnteredTxts[FD_SelectOptionsInput]) != 0 {
 			item["select_options"] = EnteredTxts[FD_SelectOptionsInput]
+		}
+
+		if SelectedFieldType == "number" && len(EnteredTxts[FD_LinkedTableInput]) != 0 {
+			item["linked_table"] = EnteredTxts[FD_LinkedTableInput]
+		}
+		if SelectedFieldType == "number" && len(EnteredTxts[FD_MinValueInput]) != 0 {
+			item["min_value"] = EnteredTxts[FD_MinValueInput]
+		}
+		if SelectedFieldType == "number" && len(EnteredTxts[FD_MaxValueInput]) != 0 {
+			item["max_value"] = EnteredTxts[FD_MaxValueInput]
 		}
 
 		if IsUpdateDialog {
