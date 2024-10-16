@@ -118,7 +118,7 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 		theCtx.ggCtx.DrawString(field, float64(cILX), float64(currentY)+FontSize)
 		fieldW, _ := theCtx.ggCtx.MeasureString(field)
 		newX := cILX + int(fieldW) + 20
-		if newX > (dialogOriginX+dialogWidth - 10 - int(fieldW)) {
+		if newX > (dialogOriginX+dialogWidth)-200{
 			currentY += 40
 			currentX = dialogOriginX+20+int(fTLW)+20
 		} else {
