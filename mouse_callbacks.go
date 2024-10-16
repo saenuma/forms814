@@ -264,17 +264,14 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		}
 
 		item["attributes"] = strings.Join(attribs, ";")
-		if SelectedFieldType == "select" && len(EnteredTxts[FD_SelectOptionsInput]) != 0 {
+		selectFields := []string{"select", "multi_display_select", "single_display_select"}
+		if slices.Index(selectFields, SelectedFieldType) != -1 && len(EnteredTxts[FD_SelectOptionsInput]) != 0 {
 			item["select_options"] = EnteredTxts[FD_SelectOptionsInput]
 		}
 
-		if SelectedFieldType == "number" && len(EnteredTxts[FD_LinkedTableInput]) != 0 {
+		if SelectedFieldType == "int" {
 			item["linked_table"] = EnteredTxts[FD_LinkedTableInput]
-		}
-		if SelectedFieldType == "number" && len(EnteredTxts[FD_MinValueInput]) != 0 {
 			item["min_value"] = EnteredTxts[FD_MinValueInput]
-		}
-		if SelectedFieldType == "number" && len(EnteredTxts[FD_MaxValueInput]) != 0 {
 			item["max_value"] = EnteredTxts[FD_MaxValueInput]
 		}
 

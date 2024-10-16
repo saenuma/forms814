@@ -137,10 +137,10 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	}
 	sOIRect := theCtx.drawTextInput(FD_SelectOptionsInput, aFLX, sFOLY+30, 400, 250, val2, false)
 
-	// for number fields
+	// for int fields
 	theCtx.ggCtx.SetHexColor("#444")
 	nFOLX, _ := nextHorizontalCoords(sOIRect, 40)
-	theCtx.ggCtx.DrawString("number field options:", float64(nFOLX), float64(sFOLY+FontSize))
+	theCtx.ggCtx.DrawString("int field options:", float64(nFOLX), float64(sFOLY+FontSize))
 
 	lTLY := sFOLY + 40
 	theCtx.ggCtx.SetHexColor("#444")
