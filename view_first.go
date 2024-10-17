@@ -73,7 +73,7 @@ func DrawWorkView(window *glfw.Window, page int) {
 	theCtx := New2dCtx(wWidth, wHeight, &WKObjCoords)
 
 	// draw top buttons
-	aFBRect := theCtx.drawButtonB(WK_AddFormBtn, 300, 10, "Add Form Button", "#fff", "#B19644", "#DECC6E")
+	aFBRect := theCtx.drawButtonB(WK_AddFormBtn, 300, 10, "Add Form Item", "#fff", "#B19644", "#DECC6E")
 	aISX, aISY := nextHorizontalCoords(aFBRect, 10)
 	oWDBRect := theCtx.drawButtonB(WK_OpenWDBtn, aISX, aISY, "Open Working Directory", "#fff", "#5C909C", "#286775")
 

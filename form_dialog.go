@@ -33,9 +33,9 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	// Add Form
 	aFLX, aFLY := dialogOriginX+20, dialogOriginY+20
 	theCtx.ggCtx.SetHexColor("#444")
-	str1 := "Add Form Configuration"
+	str1 := "Add Form Item"
 	if IsUpdateDialog {
-		str1 = "Edit Form Configuration"
+		str1 = "Edit Form Item"
 	}
 	theCtx.ggCtx.DrawString(str1, float64(aFLX), float64(aFLY)+FontSize)
 
