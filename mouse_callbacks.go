@@ -245,7 +245,6 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		
 		item := map[string]string{
 			"name":      EnteredTxts[FD_NameInput],
-			"label":     EnteredTxts[FD_LabelInput],
 			"fieldtype": SelectedFieldType,
 		}
 
@@ -262,6 +261,13 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 				attribs = append(attribs, k)
 			}
 		}
+
+		if ! slices.Contains(attribs, "hidden") && len(EnteredTxts[FD_LabelInput]) == 0 {
+			return
+		}
+
+		item["label"] = EnteredTxts[FD_LabelInput]
+
 
 		item["attributes"] = strings.Join(attribs, ";")
 		selectFields := []string{"select", "multi_display_select", "single_display_select"}
