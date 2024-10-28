@@ -1,5 +1,7 @@
 github.com/bankole7782/graphics143 v1.2.1 h1:dfmOVKOWo4mLn8d6LsLOOhMCk8jOXRPSBeGmH6XjsvA=
 github.com/bankole7782/graphics143 v1.2.1/go.mod h1:l+0N6Eufeg5lqLhzFut37FXiyR/kQJ5nVQiGa9Evzn8=
+github.com/bankole7782/graphics143 v1.2.2 h1:2R3fp4YC0+GjJ+pMyebUI1BnXQdBBHluAUpgusKGTcw=
+github.com/bankole7782/graphics143 v1.2.2/go.mod h1:OCqpQurMRTFEuI/eQCcDVe+bFqL+m+KHROD4AFBqq1w=
 github.com/fogleman/gg v1.3.0 h1:/7zJX8F6AaYQc57WQCyN9cAIz+4bCJGO9B+dyW29am8=
 github.com/fogleman/gg v1.3.0/go.mod h1:R/bRT+9gY/C5z7JzPU0zXsXHKM4/ayA+zqcVNZzPa1k=
 github.com/go-gl/gl v0.0.0-20231021071112-07e5d0ea2e71 h1:5BVwOaUSBTlVZowGO6VZGw2H/zl9nrd3eCZfYV+NfQA=
