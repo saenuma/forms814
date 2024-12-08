@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/json"
+	// "encoding/json"
 	"math"
 	"math/rand"
 	"os"
@@ -77,12 +77,6 @@ func IsKeyNumeric(key glfw.Key) bool {
 	return false
 }
 
-func SaveProjectCloseCallback(w *glfw.Window) {
-	jsonBytes, _ := json.Marshal(FormObjects)
-	rootPath, _ := GetRootPath()
-	outPath := filepath.Join(rootPath, ProjectName)
-	os.WriteFile(outPath, jsonBytes, 0777)
-}
 
 func GetProjects() []string {
 	rootPath, _ := GetRootPath()

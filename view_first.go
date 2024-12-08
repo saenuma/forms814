@@ -89,7 +89,7 @@ func DrawBeginView(window *glfw.Window, project string) {
 func DrawWorkView(window *glfw.Window, page int) {
 	CurrentPage = page
 
-	window.SetTitle(fmt.Sprintf("Project: %s ---- %s", ProjectName, ProgTitle))
+	window.SetTitle(fmt.Sprintf("Form: %s / %s ---- %s", ProjectName, FormName, ProgTitle))
 
 	WKObjCoords = make(map[int]g143.Rect)
 

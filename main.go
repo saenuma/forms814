@@ -5,6 +5,7 @@ import (
 	"time"
 	"os"
 	"path/filepath"
+	"encoding/json"
 
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -41,4 +42,12 @@ func main() {
 
 		time.Sleep(time.Second/time.Duration(FPS) - time.Since(t))
 	}
+}
+
+
+func SaveProjectCloseCallback(w *glfw.Window) {
+	jsonBytes, _ := json.Marshal(FormObjects)
+	rootPath, _ := GetRootPath()
+	outPath := filepath.Join(rootPath, ProjectName, FormName)
+	os.WriteFile(outPath, jsonBytes, 0777)
 }

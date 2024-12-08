@@ -1,7 +1,7 @@
 package main
 
 import (
-	// "encoding/json"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"slices"
@@ -58,7 +58,7 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 		}
 
 		// create file
-		FormName = NameInputEnteredTxt + ".f8p"
+		FormName = FNameInputEnteredTxt + ".f8p"
 		outPath := filepath.Join(rootPath, ProjectName, FormName)
 		os.WriteFile(outPath, []byte(""), 0777)
 
@@ -110,6 +110,15 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 
 		// create file
 		FormName = formsOfCurrentProject[num]
+
+		// load instructions
+		obj := make([]map[string]string, 0)
+		rootPath, _ := GetRootPath()
+		inPath := filepath.Join(rootPath, ProjectName, FormName)
+		rawBytes, _ := os.ReadFile(inPath)
+		json.Unmarshal(rawBytes, &obj)
+
+		FormObjects = append(FormObjects, obj...)
 
 		// move to work view
 		DrawWorkView(window, 1)
