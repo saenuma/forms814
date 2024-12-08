@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/json"
+	// "encoding/json"
 	"os"
 	"path/filepath"
 	"slices"
@@ -20,14 +20,14 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 	xPosInt := int(xPos)
 	yPosInt := int(yPos)
 
-	// wWidth, wHeight := window.GetSize()
+	wWidth, wHeight := window.GetSize()
 
-	// var widgetRS g143.Rect
+	var widgetRS g143.Rect
 	var widgetCode int
 
 	for code, RS := range ProjObjCoords {
 		if g143.InRect(RS, xPosInt, yPosInt) {
-			// widgetRS = RS
+			widgetRS = RS
 			widgetCode = code
 			break
 		}
@@ -41,13 +41,25 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 
 	switch widgetCode {
 	case PROJ_NewProject:
-		if NameInputEnteredTxt == "" {
+		// create project folder
+		rootPath, _ := GetRootPath()
+
+		outPath := filepath.Join(rootPath, NameInputEnteredTxt)
+		os.MkdirAll(outPath, 0777)
+
+		// redraw current view
+		ProjectName = NameInputEnteredTxt
+		DrawBeginView(window, NameInputEnteredTxt)
+		window.SetCursorPosCallback(getHoverCB(ProjObjCoords))
+
+	case PROJ_NewForm:
+		if FNameInputEnteredTxt == "" {
 			return
 		}
 
 		// create file
-		ProjectName = NameInputEnteredTxt + ".f8p"
-		outPath := filepath.Join(rootPath, ProjectName)
+		FormName = NameInputEnteredTxt + ".f8p"
+		outPath := filepath.Join(rootPath, ProjectName, FormName)
 		os.WriteFile(outPath, []byte(""), 0777)
 
 		// move to work view
@@ -57,28 +69,54 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 		// window.SetScrollCallback(FirstUIScrollCallback)
 		// quick hover effect
 		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
+
+	case PROJ_NameInput, PROJ_FNameInput:
+		PV_SelectedInput = widgetCode
+
+		theCtx := Continue2dCtx(CurrentWindowFrame, &ProjObjCoords)
+		theCtx.drawInput(widgetCode, widgetRS.OriginX, widgetRS.OriginY, widgetRS.Width, EnteredTxts[widgetCode], true)
+
+		// disable other inputs
+		allInputs := []int{PROJ_NameInput, PROJ_FNameInput}
+		index := slices.Index(allInputs, widgetCode)
+		leftInputs := slices.Delete(slices.Clone(allInputs), index, index+1)
+		for _, inputId := range leftInputs {
+			inputRS := ProjObjCoords[inputId]
+			theCtx.drawInput(inputId, inputRS.OriginX, inputRS.OriginY, inputRS.Width, EnteredTxts[inputId], false)
+		}
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
 	}
 
 	if widgetCode > 1000 && widgetCode < 2000 {
 		num := widgetCode - 1000 - 1
-		projectFile := GetProjectFiles()[num]
+		ProjectName = GetProjects()[num]
 
-		ProjectName = projectFile.Name
-
-		// load instructions
-		obj := make([]map[string]string, 0)
 		rootPath, _ := GetRootPath()
-		inPath := filepath.Join(rootPath, ProjectName)
-		rawBytes, _ := os.ReadFile(inPath)
-		json.Unmarshal(rawBytes, &obj)
+		outPath := filepath.Join(rootPath, ProjectName)
+		os.MkdirAll(outPath, 0777)
 
-		FormObjects = append(FormObjects, obj...)
+		// redraw current view
+		DrawBeginView(window, ProjectName)
+		window.SetCursorPosCallback(getHoverCB(ProjObjCoords))
+	} else if widgetCode > 2000 && widgetCode < 3000 {
+		num := widgetCode - 2000 - 1
+		formsOfCurrentProject := GetProjectFiles2(ProjectName)
+
+		// create file
+		FormName = formsOfCurrentProject[num]
 
 		// move to work view
 		DrawWorkView(window, 1)
 		window.SetMouseButtonCallback(workViewMouseBtnCallback)
 		window.SetKeyCallback(nil)
 		// window.SetScrollCallback(FirstUIScrollCallback)
+		// quick hover effect
 		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
 	}
 }

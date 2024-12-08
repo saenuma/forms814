@@ -84,6 +84,62 @@ func SaveProjectCloseCallback(w *glfw.Window) {
 	os.WriteFile(outPath, jsonBytes, 0777)
 }
 
+func GetProjects() []string {
+	rootPath, _ := GetRootPath()
+	dirEs, _ := os.ReadDir(rootPath)
+	projectFiles := make([]ToSortProject, 0)
+
+	for _, dirE := range dirEs {
+		if !dirE.IsDir() {
+			continue
+		}
+
+		fInfo, _ := dirE.Info()
+		projectFiles = append(projectFiles, ToSortProject{dirE.Name(), fInfo.ModTime()})
+	}
+
+	slices.SortFunc(projectFiles, func(a, b ToSortProject) int {
+		return b.ModTime.Compare(a.ModTime)
+	})
+
+	projects := make([]string, 0)
+	for _, obj := range projectFiles {
+		projects = append(projects, obj.Name)
+	}
+	return projects
+}
+
+
+func GetProjectFiles2(projName string) []string {
+	// display some project names
+	rootPath, _ := GetRootPath()
+	dirEs, _ := os.ReadDir(filepath.Join(rootPath, projName))
+
+	projectFiles := make([]ToSortProject, 0)
+	for _, dirE := range dirEs {
+		if dirE.IsDir() {
+			continue
+		}
+
+		if strings.HasSuffix(dirE.Name(), ".f8p") {
+			fInfo, _ := dirE.Info()
+			projectFiles = append(projectFiles, ToSortProject{dirE.Name(), fInfo.ModTime()})
+		}
+	}
+
+	slices.SortFunc(projectFiles, func(a, b ToSortProject) int {
+		return b.ModTime.Compare(a.ModTime)
+	})
+
+	forms := make([]string, 0)
+	for _, obj := range projectFiles {
+		forms = append(forms, obj.Name)
+	}
+
+	return forms
+}
+
+
 func GetProjectFiles() []ToSortProject {
 	// display some project names
 	rootPath, _ := GetRootPath()

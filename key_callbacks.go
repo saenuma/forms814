@@ -15,41 +15,82 @@ func ProjKeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glf
 
 	wWidth, wHeight := window.GetSize()
 
-	if key == glfw.KeyBackspace && len(NameInputEnteredTxt) != 0 {
-		NameInputEnteredTxt = NameInputEnteredTxt[:len(NameInputEnteredTxt)-1]
-	} else if key == glfw.KeyMinus && mods == glfw.ModShift {
-		NameInputEnteredTxt = NameInputEnteredTxt + "_"
-	} else if key == glfw.KeySpace {
-		NameInputEnteredTxt += " "
-	} else if key == glfw.KeyEnter && len(NameInputEnteredTxt) != 0 {
-		// create file
-		rootPath, _ := GetRootPath()
+	if PV_SelectedInput == PROJ_NameInput {
 
-		ProjectName = NameInputEnteredTxt + ".f8p"
-		outPath := filepath.Join(rootPath, ProjectName)
-		os.WriteFile(outPath, []byte(""), 0777)
+		if key == glfw.KeyBackspace && len(NameInputEnteredTxt) != 0 {
+			NameInputEnteredTxt = NameInputEnteredTxt[:len(NameInputEnteredTxt)-1]
+		} else if key == glfw.KeyMinus && mods == glfw.ModShift {
+			NameInputEnteredTxt = NameInputEnteredTxt + "_"
+		} else if key == glfw.KeySpace {
+			NameInputEnteredTxt += " "
+		} else if key == glfw.KeyEnter && len(NameInputEnteredTxt) != 0 {
+			// create project folder
+			rootPath, _ := GetRootPath()
 
-		// // move to work view
-		DrawWorkView(window, 1)
-		window.SetMouseButtonCallback(workViewMouseBtnCallback)
-		window.SetKeyCallback(nil)
-		// window.SetScrollCallback(FirstUIScrollCallback)
-		return
-	} else {
-		NameInputEnteredTxt += glfw.GetKeyName(key, scancode)
+			outPath := filepath.Join(rootPath, NameInputEnteredTxt)
+			os.MkdirAll(outPath, 0777)
+
+			// redraw current view
+			ProjectName = NameInputEnteredTxt
+			DrawBeginView(window, NameInputEnteredTxt)
+			window.SetCursorPosCallback(getHoverCB(ProjObjCoords))
+
+			// window.SetMouseButtonCallback(workViewMouseBtnCallback)
+			// window.SetKeyCallback(nil)
+			// window.SetScrollCallback(FirstUIScrollCallback)
+			return
+		} else {
+			NameInputEnteredTxt += glfw.GetKeyName(key, scancode)
+		}
+
+		nIRS := ProjObjCoords[PROJ_NameInput]
+		theCtx := Continue2dCtx(CurrentWindowFrame, &ProjObjCoords)
+		theCtx.drawInput(PROJ_NameInput, nIRS.OriginX, nIRS.OriginY, nIRS.Width, NameInputEnteredTxt, true)
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
+
+	} else if PV_SelectedInput == PROJ_FNameInput {
+
+		if key == glfw.KeyBackspace && len(FNameInputEnteredTxt) != 0 {
+			FNameInputEnteredTxt = FNameInputEnteredTxt[:len(FNameInputEnteredTxt)-1]
+		} else if key == glfw.KeyMinus && mods == glfw.ModShift {
+			FNameInputEnteredTxt = FNameInputEnteredTxt + "_"
+		} else if key == glfw.KeySpace {
+			FNameInputEnteredTxt += " "
+		} else if key == glfw.KeyEnter && len(FNameInputEnteredTxt) != 0 {
+			// create file
+			rootPath, _ := GetRootPath()
+
+			FormName = FNameInputEnteredTxt + ".f8p"
+			outPath := filepath.Join(rootPath, ProjectName, FormName)
+			os.WriteFile(outPath, []byte(""), 0777)
+
+			// // move to work view
+			DrawWorkView(window, 1)
+			window.SetMouseButtonCallback(workViewMouseBtnCallback)
+			window.SetKeyCallback(nil)
+			// window.SetScrollCallback(FirstUIScrollCallback)
+			return
+		} else {
+			FNameInputEnteredTxt += glfw.GetKeyName(key, scancode)
+		}
+
+		fnIRS := ProjObjCoords[PROJ_FNameInput]
+		theCtx := Continue2dCtx(CurrentWindowFrame, &ProjObjCoords)
+		theCtx.drawInput(PROJ_FNameInput, fnIRS.OriginX, fnIRS.OriginY, fnIRS.Width, FNameInputEnteredTxt, true)
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
 	}
-
-	nIRS := ProjObjCoords[PROJ_NameInput]
-	theCtx := Continue2dCtx(CurrentWindowFrame, &ProjObjCoords)
-	theCtx.drawInput(PROJ_NameInput, nIRS.OriginX, nIRS.OriginY, nIRS.Width, NameInputEnteredTxt, true)
-
-	// send the frame to glfw window
-	windowRS := g143.Rect{Width: wWidth, Height: wHeight, OriginX: 0, OriginY: 0}
-	g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), windowRS)
-	window.SwapBuffers()
-
-	// save the frame
-	CurrentWindowFrame = theCtx.ggCtx.Image()
 }
 
 func FDKeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {

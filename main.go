@@ -3,21 +3,28 @@ package main
 import (
 	"runtime"
 	"time"
+	"os"
+	"path/filepath"
 
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
 func main() {
-	_, err := GetRootPath()
+	rootPath, err := GetRootPath()
 	if err != nil {
 		panic(err)
 	}
 
+
+	// make default project
+	os.MkdirAll(filepath.Join(rootPath, "first_proj"), 0777)
+
 	runtime.LockOSThread()
 
 	window := g143.NewWindow(1200, 800, ProgTitle, false)
-	DrawBeginView(window)
+	ProjectName = "first_proj"
+	DrawBeginView(window, "first_proj")
 
 	// respond to the mouse
 	window.SetMouseButtonCallback(projViewMouseCallback)
