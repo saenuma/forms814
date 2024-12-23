@@ -25,7 +25,7 @@ func DrawBeginView(window *glfw.Window, project string) {
 	currentX := 40
 	currentY := 30 + 10 + 20
 
-	projectsPaneWidth := (wWidth/2) - 50
+	projectsPaneWidth := (wWidth / 2) - 50
 	for i, pf := range projects {
 
 		btnId := 1000 + (i + 1)
@@ -47,13 +47,13 @@ func DrawBeginView(window *glfw.Window, project string) {
 	theCtx.drawButtonA(PROJ_NewProject, pnBtnX, pnBtnY, "New Project", fontColor, "#B3AE97")
 
 	// second column
-	secondColumnX := projectsPaneWidth+50
+	secondColumnX := projectsPaneWidth + 50
 	theCtx.ggCtx.LoadFontFace(fontPath, 30)
 	theCtx.ggCtx.DrawString(fmt.Sprintf("Form Objects of %s", project), float64(secondColumnX), 10+30)
 
 	// forms of project
-	formsOfCurrentProject := GetProjectFiles2(project)
-	currentX = secondColumnX+40
+	formsOfCurrentProject := GetProjectFiles(project)
+	currentX = secondColumnX + 40
 	currentY = 30 + 10 + 20
 	theCtx.ggCtx.LoadFontFace(fontPath, 20)
 

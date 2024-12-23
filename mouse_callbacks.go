@@ -106,7 +106,7 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 		window.SetCursorPosCallback(getHoverCB(ProjObjCoords))
 	} else if widgetCode > 2000 && widgetCode < 3000 {
 		num := widgetCode - 2000 - 1
-		formsOfCurrentProject := GetProjectFiles2(ProjectName)
+		formsOfCurrentProject := GetProjectFiles(ProjectName)
 
 		// create file
 		FormName = formsOfCurrentProject[num]
@@ -262,7 +262,7 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		}
 
 		// disable other inputs
-		allInputs := []int{FD_NameInput, FD_LabelInput, FD_SelectOptionsInput, 
+		allInputs := []int{FD_NameInput, FD_LabelInput, FD_SelectOptionsInput,
 			FD_LinkedTableInput, FD_MinValueInput, FD_MaxValueInput}
 		index := slices.Index(allInputs, widgetCode)
 		leftInputs := slices.Delete(slices.Clone(allInputs), index, index+1)
@@ -289,7 +289,7 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 				return
 			}
 		}
-		
+
 		item := map[string]string{
 			"name":      EnteredTxts[FD_NameInput],
 			"fieldtype": SelectedFieldType,
@@ -309,12 +309,11 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 			}
 		}
 
-		if ! slices.Contains(attribs, "hidden") && len(EnteredTxts[FD_LabelInput]) == 0 {
+		if !slices.Contains(attribs, "hidden") && len(EnteredTxts[FD_LabelInput]) == 0 {
 			return
 		}
 
 		item["label"] = EnteredTxts[FD_LabelInput]
-
 
 		item["attributes"] = strings.Join(attribs, ";")
 		selectFields := []string{"select", "multi_display_select", "single_display_select"}

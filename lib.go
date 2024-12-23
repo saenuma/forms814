@@ -77,7 +77,6 @@ func IsKeyNumeric(key glfw.Key) bool {
 	return false
 }
 
-
 func GetProjects() []string {
 	rootPath, _ := GetRootPath()
 	dirEs, _ := os.ReadDir(rootPath)
@@ -85,6 +84,10 @@ func GetProjects() []string {
 
 	for _, dirE := range dirEs {
 		if !dirE.IsDir() {
+			continue
+		}
+
+		if strings.HasPrefix(dirE.Name(), ".") {
 			continue
 		}
 
@@ -103,8 +106,7 @@ func GetProjects() []string {
 	return projects
 }
 
-
-func GetProjectFiles2(projName string) []string {
+func GetProjectFiles(projName string) []string {
 	// display some project names
 	rootPath, _ := GetRootPath()
 	dirEs, _ := os.ReadDir(filepath.Join(rootPath, projName))
@@ -112,6 +114,10 @@ func GetProjectFiles2(projName string) []string {
 	projectFiles := make([]ToSortProject, 0)
 	for _, dirE := range dirEs {
 		if dirE.IsDir() {
+			continue
+		}
+
+		if strings.HasPrefix(dirE.Name(), ".") {
 			continue
 		}
 
@@ -131,31 +137,6 @@ func GetProjectFiles2(projName string) []string {
 	}
 
 	return forms
-}
-
-
-func GetProjectFiles() []ToSortProject {
-	// display some project names
-	rootPath, _ := GetRootPath()
-	dirEs, _ := os.ReadDir(rootPath)
-
-	projectFiles := make([]ToSortProject, 0)
-	for _, dirE := range dirEs {
-		if dirE.IsDir() {
-			continue
-		}
-
-		if strings.HasSuffix(dirE.Name(), ".f8p") {
-			fInfo, _ := dirE.Info()
-			projectFiles = append(projectFiles, ToSortProject{dirE.Name(), fInfo.ModTime()})
-		}
-	}
-
-	slices.SortFunc(projectFiles, func(a, b ToSortProject) int {
-		return b.ModTime.Compare(a.ModTime)
-	})
-
-	return projectFiles
 }
 
 func TotalPages() int {
