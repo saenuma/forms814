@@ -52,6 +52,10 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 		DrawBeginView(window, NameInputEnteredTxt)
 		window.SetCursorPosCallback(getHoverCB(ProjObjCoords))
 
+	case PROJ_OpenWDBtn:
+		rootPath, _ := GetRootPath()
+		ExternalLaunch(rootPath)
+
 	case PROJ_NewForm:
 		if FNameInputEnteredTxt == "" {
 			return
@@ -165,10 +169,6 @@ func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, acti
 		window.SetCharCallback(FDCharCallback)
 		window.SetScrollCallback(nil)
 		window.SetCursorPosCallback(getHoverCB(FDObjCoords))
-
-	case WK_OpenWDBtn:
-		rootPath, _ := GetRootPath()
-		ExternalLaunch(rootPath)
 
 	case WK_BackBtn:
 		// save formobject

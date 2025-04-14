@@ -18,12 +18,13 @@ func DrawBeginView(window *glfw.Window, project string) {
 
 	theCtx.ggCtx.SetHexColor(fontColor)
 	theCtx.ggCtx.DrawString("Projects", 20, 10+30)
-
 	theCtx.ggCtx.LoadFontFace(fontPath, 20)
+
+	theCtx.drawButtonB(PROJ_OpenWDBtn, 200, 10, "Open Folder", "#fff", "#5C909C", "#286775")
 
 	projects := GetProjects()
 	currentX := 40
-	currentY := 30 + 10 + 20
+	currentY := 30 + 10 + 40
 
 	projectsPaneWidth := (wWidth / 2) - 50
 	for i, pf := range projects {
