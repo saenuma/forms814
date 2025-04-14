@@ -56,7 +56,7 @@ var (
 
 	cursorEventsCount = 0
 
-	supportedFields = []string{"int", "string", "text", "email", "date",
+	supportedFields = []string{"int", "string", "text", "email", "date", "float",
 		"datetime", "select", "multi_display_select", "single_display_select", "check"}
 	attributes = []string{"required", "unique", "nindex", "hidden"}
 
