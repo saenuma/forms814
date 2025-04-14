@@ -86,9 +86,7 @@ func DrawBeginView(window *glfw.Window, project string) {
 	CurrentWindowFrame = theCtx.ggCtx.Image()
 }
 
-func DrawWorkView(window *glfw.Window, page int) {
-	CurrentPage = page
-
+func DrawWorkView(window *glfw.Window) {
 	window.SetTitle(fmt.Sprintf("Form: %s / %s ---- %s", ProjectName, FormName, ProgTitle))
 
 	WKObjCoords = make(map[int]g143.Rect)
@@ -97,21 +95,12 @@ func DrawWorkView(window *glfw.Window, page int) {
 	theCtx := New2dCtx(wWidth, wHeight, &WKObjCoords)
 
 	// draw top buttons
-	aFBRect := theCtx.drawButtonB(WK_AddFormBtn, 300, 10, "Add Form Item", "#fff", "#B19644", "#DECC6E")
-	aISX, aISY := nextHorizontalCoords(aFBRect, 10)
-	oWDBRect := theCtx.drawButtonB(WK_OpenWDBtn, aISX, aISY, "Open Working Directory", "#fff", "#5C909C", "#286775")
+	bBRect := theCtx.drawButtonB(WK_BackBtn, 10, 10, "Back", "#fff", "#5C909C", "#286775")
+	aFBX, _ := nextHorizontalCoords(bBRect, 20)
+	aFBRect := theCtx.drawButtonB(WK_AddFormBtn, aFBX, 10, "Add Form Item", "#fff", "#5F7E5D", "#889B87")
 
-	// draw end of topbar demarcation
-	_, demarcY := nextVerticalCoords(oWDBRect, 10)
-	theCtx.ggCtx.SetHexColor("#aaa")
-	theCtx.ggCtx.DrawRectangle(10, float64(demarcY), float64(wWidth)-20, 2)
-	theCtx.ggCtx.Fill()
-
-	currentX, currentY := 20, demarcY+15
-	formObjects := GetPageFormObjects(page)
-	for j, fObj := range formObjects {
-		i := (PageSize * (page - 1)) + j
-
+	currentX, currentY := 20, aFBRect.OriginY+aFBRect.Height+15
+	for i, fObj := range FormObjects {
 		theCtx.ggCtx.SetHexColor("#444")
 		str2 := fmt.Sprintf("%d. label: %s name: %s fieldtype: %s attributes: %s",
 			i+1, fObj["label"],

@@ -2,7 +2,7 @@ package main
 
 import (
 	// "encoding/json"
-	"math"
+
 	"math/rand"
 	"os"
 	"os/exec"
@@ -137,25 +137,4 @@ func GetProjectFiles(projName string) []string {
 	}
 
 	return forms
-}
-
-func TotalPages() int {
-	return int(math.Ceil(float64(len(FormObjects)) / float64(PageSize)))
-}
-
-func GetPageFormObjects(page int) []map[string]string {
-	beginIndex := (page - 1) * PageSize
-	endIndex := beginIndex + PageSize
-
-	var retFormObjects []map[string]string
-	if len(FormObjects) <= PageSize {
-		retFormObjects = FormObjects
-	} else if page == 1 {
-		retFormObjects = FormObjects[:PageSize]
-	} else if endIndex > len(FormObjects) {
-		retFormObjects = FormObjects[beginIndex:]
-	} else {
-		retFormObjects = FormObjects[beginIndex:endIndex]
-	}
-	return retFormObjects
 }

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"runtime"
-	"time"
+	"encoding/json"
 	"os"
 	"path/filepath"
-	"encoding/json"
+	"runtime"
+	"time"
 
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -16,7 +16,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 
 	// make default project
 	os.MkdirAll(filepath.Join(rootPath, "first_proj"), 0777)
@@ -44,10 +43,12 @@ func main() {
 	}
 }
 
-
 func SaveProjectCloseCallback(w *glfw.Window) {
-	jsonBytes, _ := json.Marshal(FormObjects)
-	rootPath, _ := GetRootPath()
-	outPath := filepath.Join(rootPath, ProjectName, FormName)
-	os.WriteFile(outPath, jsonBytes, 0777)
+	if FormName != "" {
+		jsonBytes, _ := json.Marshal(FormObjects)
+		rootPath, _ := GetRootPath()
+		outPath := filepath.Join(rootPath, ProjectName, FormName)
+		os.WriteFile(outPath, jsonBytes, 0777)
+
+	}
 }

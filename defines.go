@@ -15,20 +15,22 @@ const (
 
 	PROJ_NameInput  = 11
 	PROJ_NewProject = 12
-	PROJ_NewForm = 13
+	PROJ_NewForm    = 13
 	PROJ_FNameInput = 14
+	PROJ_OpenWDBtn  = 15
 
 	WK_AddFormBtn = 21
 	WK_OpenWDBtn  = 22
+	WK_BackBtn    = 23
 
 	FD_AddBtn             = 31
 	FD_CloseBtn           = 32
 	FD_NameInput          = 33
 	FD_LabelInput         = 34
 	FD_SelectOptionsInput = 35
-	FD_LinkedTableInput = 36
-	FD_MinValueInput = 37
-	FD_MaxValueInput = 38
+	FD_LinkedTableInput   = 36
+	FD_MinValueInput      = 37
+	FD_MaxValueInput      = 38
 
 	ProgTitle = "forms814: a tool for website developers on records collection"
 )
@@ -36,7 +38,7 @@ const (
 var (
 	CurrentWindowFrame image.Image
 	ProjectName        string
-	FormName string
+	FormName           string
 	ToUpdateInstrNum   int // for updating an instruction
 	IsUpdateDialog     bool
 	CurrentPage        int
@@ -49,7 +51,7 @@ var (
 	WKObjCoords   map[int]g143.Rect
 	FDObjCoords   map[int]g143.Rect
 
-	NameInputEnteredTxt string
+	NameInputEnteredTxt  string
 	FNameInputEnteredTxt string
 
 	cursorEventsCount = 0

@@ -63,7 +63,7 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 		os.WriteFile(outPath, []byte(""), 0777)
 
 		// move to work view
-		DrawWorkView(window, 1)
+		DrawWorkView(window)
 		window.SetMouseButtonCallback(workViewMouseBtnCallback)
 		window.SetKeyCallback(nil)
 		// window.SetScrollCallback(FirstUIScrollCallback)
@@ -118,10 +118,10 @@ func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action 
 		rawBytes, _ := os.ReadFile(inPath)
 		json.Unmarshal(rawBytes, &obj)
 
-		FormObjects = append(FormObjects, obj...)
+		FormObjects = obj
 
 		// move to work view
-		DrawWorkView(window, 1)
+		DrawWorkView(window)
 		window.SetMouseButtonCallback(workViewMouseBtnCallback)
 		window.SetKeyCallback(nil)
 		// window.SetScrollCallback(FirstUIScrollCallback)
@@ -170,6 +170,20 @@ func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, acti
 		rootPath, _ := GetRootPath()
 		ExternalLaunch(rootPath)
 
+	case WK_BackBtn:
+		// save formobject
+		jsonBytes, _ := json.Marshal(FormObjects)
+		rootPath, _ := GetRootPath()
+		outPath := filepath.Join(rootPath, ProjectName, FormName)
+		os.WriteFile(outPath, jsonBytes, 0777)
+
+		// draw projects selection view
+		ProjectName = "first_proj"
+		FormName = ""
+		DrawBeginView(window, "first_proj")
+		window.SetMouseButtonCallback(projViewMouseCallback)
+		window.SetKeyCallback(ProjKeyCallback)
+		window.SetCursorPosCallback(getHoverCB(ProjObjCoords))
 	}
 
 	// for generated buttons
@@ -205,7 +219,7 @@ func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, acti
 		FormObjects = slices.Delete(FormObjects, objNum, objNum+1)
 
 		WKObjCoords = make(map[int]g143.Rect)
-		DrawWorkView(window, CurrentPage)
+		DrawWorkView(window)
 		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
 
 	}
@@ -242,7 +256,7 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		IsUpdateDialog = false
 		IsInsertBeforeDialog = false
 
-		DrawWorkView(window, CurrentPage)
+		DrawWorkView(window)
 		// register the ViewMain mouse callback
 		window.SetMouseButtonCallback(workViewMouseBtnCallback)
 		// unregister the keyCallback
@@ -345,7 +359,7 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		}
 		AttribState = make(map[string]bool)
 
-		DrawWorkView(window, TotalPages())
+		DrawWorkView(window)
 		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
 
 		// register the ViewMain mouse callback
