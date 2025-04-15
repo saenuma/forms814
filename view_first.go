@@ -66,7 +66,7 @@ func DrawBeginView(window *glfw.Window, project string) {
 		newX := currentX + pfRect.Width + 10
 		if newX > (wWidth - pfRect.Width) {
 			currentY += 50
-			currentX = 40
+			currentX = secondColumnX + 40
 		} else {
 			currentX += pfRect.Width + 10
 		}
