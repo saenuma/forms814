@@ -9,6 +9,7 @@ import (
 
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/tidwall/pretty"
 )
 
 func main() {
@@ -46,9 +47,9 @@ func main() {
 func SaveProjectCloseCallback(w *glfw.Window) {
 	if FormName != "" {
 		jsonBytes, _ := json.Marshal(FormObjects)
+		prettyJsonBytes := pretty.Pretty(jsonBytes)
 		rootPath, _ := GetRootPath()
 		outPath := filepath.Join(rootPath, ProjectName, FormName)
-		os.WriteFile(outPath, jsonBytes, 0777)
-
+		os.WriteFile(outPath, prettyJsonBytes, 0777)
 	}
 }

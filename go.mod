@@ -9,6 +9,7 @@ require (
 	github.com/gookit/color v1.5.4
 	github.com/kovidgoyal/imaging v1.6.3
 	github.com/pkg/errors v0.9.1
+	github.com/tidwall/pretty v1.2.1
 )
 
 require (

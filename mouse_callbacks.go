@@ -9,6 +9,7 @@ import (
 
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/tidwall/pretty"
 )
 
 func projViewMouseCallback(window *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
@@ -173,9 +174,10 @@ func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, acti
 	case WK_BackBtn:
 		// save formobject
 		jsonBytes, _ := json.Marshal(FormObjects)
+		prettyJsonBytes := pretty.Pretty(jsonBytes)
 		rootPath, _ := GetRootPath()
 		outPath := filepath.Join(rootPath, ProjectName, FormName)
-		os.WriteFile(outPath, jsonBytes, 0777)
+		os.WriteFile(outPath, prettyJsonBytes, 0777)
 
 		// draw projects selection view
 		ProjectName = "first_proj"
