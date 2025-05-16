@@ -186,6 +186,7 @@ func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, acti
 		DrawBeginView(window, "first_proj")
 		window.SetMouseButtonCallback(projViewMouseCallback)
 		window.SetKeyCallback(ProjKeyCallback)
+		window.SetCharCallback(nil)
 		window.SetCursorPosCallback(getHoverCB(ProjObjCoords))
 	}
 
@@ -258,6 +259,12 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 	case FD_CloseBtn:
 		IsUpdateDialog = false
 		IsInsertBeforeDialog = false
+		FD_SelectedInput = 0
+
+		EnteredTxts = map[int]string{
+			FD_LabelInput: "", FD_NameInput: "", FD_SelectOptionsInput: "",
+			FD_LinkedTableInput: "", FD_MinValueInput: "", FD_MaxValueInput: "",
+		}
 
 		DrawWorkView(window)
 		// register the ViewMain mouse callback
@@ -381,6 +388,7 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 			}
 		}
 
+		FD_SelectedInput = 0
 		EnteredTxts = map[int]string{
 			FD_LabelInput: "", FD_NameInput: "", FD_SelectOptionsInput: "",
 			FD_LinkedTableInput: "", FD_MinValueInput: "", FD_MaxValueInput: "",
