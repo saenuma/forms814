@@ -44,8 +44,8 @@ func DrawBeginView(window *glfw.Window, project string) {
 
 	// new project form
 	pnIRect := theCtx.drawInput(PROJ_NameInput, 40, wHeight-60, 350, "enter project name", false)
-	pnBtnX, pnBtnY := nextHorizontalCoords(pnIRect, 30)
-	theCtx.drawButtonA(PROJ_NewProject, pnBtnX, pnBtnY, "New Project", fontColor, "#B3AE97")
+	pnBtnX := nextHorizontalCoords(pnIRect, 30)
+	theCtx.drawButtonA(PROJ_NewProject, pnBtnX, pnIRect.OriginY, "New Project", fontColor, "#B3AE97")
 
 	// second column
 	secondColumnX := projectsPaneWidth + 50
@@ -75,8 +75,8 @@ func DrawBeginView(window *glfw.Window, project string) {
 
 	// new formObject form
 	fnIRect := theCtx.drawInput(PROJ_FNameInput, secondColumnX+40, wHeight-60, 350, "enter form name", false)
-	fnBtnX, fnBtnY := nextHorizontalCoords(fnIRect, 30)
-	theCtx.drawButtonA(PROJ_NewForm, fnBtnX, fnBtnY, "New Form", fontColor, "#B3AE97")
+	fnBtnX := nextHorizontalCoords(fnIRect, 30)
+	theCtx.drawButtonA(PROJ_NewForm, fnBtnX, fnIRect.OriginY, "New Form", fontColor, "#B3AE97")
 
 	// send the frame to glfw window
 	windowRS := g143.Rect{Width: wWidth, Height: wHeight, OriginX: 0, OriginY: 0}
@@ -97,7 +97,7 @@ func DrawWorkView(window *glfw.Window) {
 
 	// draw top buttons
 	bBRect := theCtx.drawButtonB(WK_BackBtn, 10, 10, "Back", "#fff", "#5C909C", "#286775")
-	aFBX, _ := nextHorizontalCoords(bBRect, 20)
+	aFBX := nextHorizontalCoords(bBRect, 20)
 	aFBRect := theCtx.drawButtonB(WK_AddFormBtn, aFBX, 10, "Add Form Item", "#fff", "#5F7E5D", "#889B87")
 
 	currentX, currentY := 20, aFBRect.OriginY+aFBRect.Height+15
@@ -110,10 +110,10 @@ func DrawWorkView(window *glfw.Window) {
 
 		addBeforeBtnId := 2000 + 1 + i
 		aBBRect := theCtx.drawButtonA(addBeforeBtnId, currentX, currentY+30, "add before", "#fff", "#4E962D")
-		eFOBX, _ := nextHorizontalCoords(aBBRect, 20)
+		eFOBX := nextHorizontalCoords(aBBRect, 20)
 		eFOBtnId := 3000 + i + 1
 		eFOBRect := theCtx.drawButtonA(eFOBtnId, eFOBX, currentY+30, "edit", "#fff", "#968D2D")
-		dFOBX, _ := nextHorizontalCoords(eFOBRect, 20)
+		dFOBX := nextHorizontalCoords(eFOBRect, 20)
 		dFOBtnId := 4000 + i + 1
 		theCtx.drawButtonA(dFOBtnId, dFOBX, currentY+30, "delete", "#fff", "#962D2D")
 		currentY += 70

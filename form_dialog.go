@@ -41,7 +41,7 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 
 	addBtnOriginX := dialogWidth + dialogOriginX - 160
 	addBtnRect := theCtx.drawButtonA(FD_AddBtn, addBtnOriginX, dialogOriginY+20, "Add", "#fff", "#56845A")
-	closeBtnX, _ := nextHorizontalCoords(addBtnRect, 10)
+	closeBtnX := nextHorizontalCoords(addBtnRect, 10)
 	theCtx.drawButtonA(FD_CloseBtn, closeBtnX, addBtnRect.OriginY, "Close", "#fff", "#B75F5F")
 
 	// name input
@@ -74,7 +74,7 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 		} else {
 			cIRect = theCtx.drawCheckbox(cBtnId, currentX, currentY, false)
 		}
-		cILX, _ := nextHorizontalCoords(cIRect, 10)
+		cILX := nextHorizontalCoords(cIRect, 10)
 
 		theCtx.ggCtx.SetHexColor("#444")
 		theCtx.ggCtx.DrawString(attribName, float64(cILX), float64(currentY)+FontSize)
@@ -84,7 +84,7 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 
 	// label input
 	theCtx.ggCtx.SetHexColor("#444")
-	_, fLLY := nextVerticalCoords(fNIRect, 15)
+	fLLY := nextVerticalCoords(fNIRect, 15)
 	theCtx.ggCtx.DrawString("field label:", float64(aFLX), float64(fLLY)+FontSize)
 	fLLW, _ := theCtx.ggCtx.MeasureString("field label:")
 	fLIX := aFLX + int(fLLW) + 20
@@ -98,7 +98,7 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 
 	// field type
 	theCtx.ggCtx.SetHexColor("#444")
-	_, fTLY := nextVerticalCoords(fLIRect, 15)
+	fTLY := nextVerticalCoords(fLIRect, 15)
 	theCtx.ggCtx.DrawString("field type:", float64(aFLX), float64(fTLY)+FontSize)
 	fTLW, _ := theCtx.ggCtx.MeasureString("field type:")
 	currentX, currentY = aFLX+int(fTLW)+20, fTLY
@@ -112,15 +112,18 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 		} else {
 			cIRect = theCtx.drawCheckbox(cBtnId, currentX, currentY, false)
 		}
-		cILX, _ := nextHorizontalCoords(cIRect, 10)
+		cILX := nextHorizontalCoords(cIRect, 10)
 
 		theCtx.ggCtx.SetHexColor("#444")
 		theCtx.ggCtx.DrawString(field, float64(cILX), float64(currentY)+FontSize)
 		fieldW, _ := theCtx.ggCtx.MeasureString(field)
 		newX := cILX + int(fieldW) + 20
-		if newX > (dialogOriginX+dialogWidth)-200{
+		if i == len(supportedFields)-1 {
+			break
+		}
+		if newX > (dialogOriginX+dialogWidth)-200 {
 			currentY += 40
-			currentX = dialogOriginX+20+int(fTLW)+20
+			currentX = dialogOriginX + 20 + int(fTLW) + 20
 		} else {
 			currentX = newX
 		}
@@ -133,13 +136,18 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	var val2 string
 	if IsUpdateDialog {
 		val2 = FormObjects[ToUpdateInstrNum]["select_options"]
-		EnteredTxts[FD_SelectOptionsInput] = val2
+		// EnteredTxts[FD_SelectOptionsInput] = val2
 	}
-	sOIRect := theCtx.drawTextInput(FD_SelectOptionsInput, aFLX, sFOLY+30, 400, 250, val2, false)
+	pBY := sFOLY + 30
+	sPBRS := theCtx.drawButtonA(FD_SelectPasteBtn, aFLX, pBY, "paste", "#444", "#E7E199")
+	sEBX := nextHorizontalCoords(sPBRS, 20)
+	sEBRS := theCtx.drawButtonA(FD_SelectEmptyBtn, sEBX, pBY, "empty", "#444", "#E7E199")
+	sOIY := nextVerticalCoords(sEBRS, 10)
+	sOIRect := theCtx.drawTextInput(FD_SelectOptionsInput, aFLX, sOIY, 400, 200, val2, false)
 
 	// for int fields
 	theCtx.ggCtx.SetHexColor("#444")
-	nFOLX, _ := nextHorizontalCoords(sOIRect, 40)
+	nFOLX := nextHorizontalCoords(sOIRect, 40)
 	theCtx.ggCtx.DrawString("int field options:", float64(nFOLX), float64(sFOLY+FontSize))
 
 	lTLY := sFOLY + 40
@@ -156,7 +164,7 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	lTIRect := theCtx.drawInput(FD_LinkedTableInput, lTIX, lTLY, 250, val4, false)
 
 	// min value input
-	_, mVLY := nextVerticalCoords(lTIRect, 10)
+	mVLY := nextVerticalCoords(lTIRect, 10)
 	theCtx.ggCtx.SetHexColor("#444")
 	theCtx.ggCtx.DrawString("min value:", float64(nFOLX), float64(mVLY)+FontSize)
 	mVLW, _ := theCtx.ggCtx.MeasureString("min value:")
@@ -170,7 +178,7 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	mVIRect := theCtx.drawInput(FD_MinValueInput, mVIX, mVLY, 250, val5, false)
 
 	// max value input
-	_, mV2LY := nextVerticalCoords(mVIRect, 15)
+	mV2LY := nextVerticalCoords(mVIRect, 15)
 	theCtx.ggCtx.SetHexColor("#444")
 	theCtx.ggCtx.DrawString("max value:", float64(nFOLX), float64(mV2LY)+FontSize)
 

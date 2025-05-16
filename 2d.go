@@ -174,6 +174,9 @@ func (ctx *Ctx) drawTextInput(inputId, originX, originY, inputWidth, height int,
 			ctx.ggCtx.SetHexColor("#444")
 			ctx.ggCtx.DrawString(str, float64(originX+15), float64(currentY)+FontSize)
 			currentY += FontSize + 5
+			if currentY >= (originY + height) {
+				break
+			}
 		}
 	}
 	return entryRect
@@ -183,14 +186,10 @@ func (ctx *Ctx) windowRect() g143.Rect {
 	return g143.NewRect(0, 0, ctx.WindowWidth, ctx.WindowHeight)
 }
 
-func nextHorizontalCoords(aRect g143.Rect, margin int) (int, int) {
-	nextOriginX := aRect.OriginX + aRect.Width + margin
-	nextOriginY := aRect.OriginY
-	return nextOriginX, nextOriginY
+func nextHorizontalCoords(aRect g143.Rect, margin int) int {
+	return aRect.OriginX + aRect.Width + margin
 }
 
-func nextVerticalCoords(aRect g143.Rect, margin int) (int, int) {
-	nextOriginX := margin
-	nextOriginY := aRect.OriginY + aRect.Height + margin
-	return nextOriginX, nextOriginY
+func nextVerticalCoords(aRect g143.Rect, margin int) int {
+	return aRect.OriginY + aRect.Height + margin
 }

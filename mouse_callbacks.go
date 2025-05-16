@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"slices"
@@ -266,31 +267,56 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		// window.SetScrollCallback(FirstUIScrollCallback)
 		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
 
-	case FD_NameInput, FD_LabelInput, FD_SelectOptionsInput, FD_LinkedTableInput, FD_MinValueInput, FD_MaxValueInput:
+	case FD_NameInput, FD_LabelInput, FD_LinkedTableInput, FD_MinValueInput, FD_MaxValueInput:
 		FD_SelectedInput = widgetCode
 
 		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
-		if widgetCode == FD_SelectOptionsInput {
-			theCtx.drawTextInput(widgetCode, widgetRS.OriginX, widgetRS.OriginY, widgetRS.Width,
-				widgetRS.Height, EnteredTxts[widgetCode], true)
-		} else {
-			theCtx.drawInput(widgetCode, widgetRS.OriginX, widgetRS.OriginY, widgetRS.Width, EnteredTxts[widgetCode], true)
-		}
+		theCtx.drawInput(widgetCode, widgetRS.OriginX, widgetRS.OriginY, widgetRS.Width, EnteredTxts[widgetCode], true)
 
 		// disable other inputs
-		allInputs := []int{FD_NameInput, FD_LabelInput, FD_SelectOptionsInput,
-			FD_LinkedTableInput, FD_MinValueInput, FD_MaxValueInput}
+		allInputs := []int{FD_NameInput, FD_LabelInput, FD_LinkedTableInput, FD_MinValueInput, FD_MaxValueInput}
 		index := slices.Index(allInputs, widgetCode)
 		leftInputs := slices.Delete(slices.Clone(allInputs), index, index+1)
 		for _, inputId := range leftInputs {
 			inputRS := FDObjCoords[inputId]
-			if inputId == FD_SelectOptionsInput {
-				theCtx.drawTextInput(inputId, inputRS.OriginX, inputRS.OriginY, inputRS.Width,
-					inputRS.Height, EnteredTxts[inputId], false)
-			} else {
-				theCtx.drawInput(inputId, inputRS.OriginX, inputRS.OriginY, inputRS.Width, EnteredTxts[inputId], false)
-			}
+			theCtx.drawInput(inputId, inputRS.OriginX, inputRS.OriginY, inputRS.Width, EnteredTxts[inputId], false)
 		}
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
+
+	case FD_SelectEmptyBtn:
+		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
+
+		EnteredTxts[FD_SelectOptionsInput] = ""
+		sIRect := FDObjCoords[FD_SelectOptionsInput]
+		theCtx.drawTextInput(FD_SelectOptionsInput, sIRect.OriginX, sIRect.OriginY, sIRect.Width,
+			sIRect.Height, EnteredTxts[FD_SelectOptionsInput], false)
+
+		// send the frame to glfw window
+		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
+		window.SwapBuffers()
+
+		// save the frame
+		CurrentWindowFrame = theCtx.ggCtx.Image()
+
+	case FD_SelectPasteBtn:
+		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
+
+		tmp := strings.ReplaceAll(glfw.GetClipboardString(), "\r", "")
+		var newTmp string
+		for _, part := range strings.Split(tmp, "\n") {
+			newTmp += strings.TrimSpace(part) + "\n"
+		}
+		EnteredTxts[FD_SelectOptionsInput] = newTmp
+		fmt.Println(EnteredTxts[FD_SelectOptionsInput])
+		sIRect := FDObjCoords[FD_SelectOptionsInput]
+		theCtx.drawTextInput(FD_SelectOptionsInput, sIRect.OriginX, sIRect.OriginY, sIRect.Width,
+			sIRect.Height, EnteredTxts[FD_SelectOptionsInput], false)
 
 		// send the frame to glfw window
 		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())

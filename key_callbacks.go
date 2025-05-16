@@ -138,26 +138,6 @@ func FDKeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glfw.
 		// save the frame
 		CurrentWindowFrame = theCtx.ggCtx.Image()
 
-	} else if FD_SelectedInput == FD_SelectOptionsInput {
-		val := EnteredTxts[FD_SelectOptionsInput]
-		if key == glfw.KeyBackspace && len(val) != 0 {
-			EnteredTxts[FD_SelectOptionsInput] = val[:len(val)-1]
-		} else if key == glfw.KeyEnter {
-			EnteredTxts[FD_SelectOptionsInput] = val + "\n"
-		}
-
-		sIRect := FDObjCoords[FD_SelectOptionsInput]
-		theCtx := Continue2dCtx(CurrentWindowFrame, &FDObjCoords)
-		theCtx.drawTextInput(FD_SelectOptionsInput, sIRect.OriginX, sIRect.OriginY, sIRect.Width,
-			sIRect.Height, EnteredTxts[FD_SelectOptionsInput], true)
-
-		// send the frame to glfw window
-		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
-		window.SwapBuffers()
-
-		// save the frame
-		CurrentWindowFrame = theCtx.ggCtx.Image()
-
 	} else if FD_SelectedInput == FD_LinkedTableInput {
 		val := EnteredTxts[FD_LinkedTableInput]
 		if key == glfw.KeyBackspace && len(val) != 0 {

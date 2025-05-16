@@ -31,6 +31,8 @@ const (
 	FD_LinkedTableInput   = 36
 	FD_MinValueInput      = 37
 	FD_MaxValueInput      = 38
+	FD_SelectPasteBtn     = 41
+	FD_SelectEmptyBtn     = 42
 
 	ProgTitle = "forms814: a tool for website developers on records collection"
 )
