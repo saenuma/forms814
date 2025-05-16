@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 	"slices"
@@ -320,7 +319,6 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 			newTmp += strings.TrimSpace(part) + "\n"
 		}
 		EnteredTxts[FD_SelectOptionsInput] = newTmp
-		fmt.Println(EnteredTxts[FD_SelectOptionsInput])
 		sIRect := FDObjCoords[FD_SelectOptionsInput]
 		theCtx.drawTextInput(FD_SelectOptionsInput, sIRect.OriginX, sIRect.OriginY, sIRect.Width,
 			sIRect.Height, EnteredTxts[FD_SelectOptionsInput], false)
