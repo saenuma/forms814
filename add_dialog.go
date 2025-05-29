@@ -40,7 +40,11 @@ func drawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	theCtx.ggCtx.DrawString(str1, float64(aFLX), float64(aFLY)+FontSize)
 
 	addBtnOriginX := dialogWidth + dialogOriginX - 160
-	addBtnRect := theCtx.drawButtonA(FD_AddBtn, addBtnOriginX, dialogOriginY+20, "Add", "#fff", "#56845A")
+	addBtnStr := "Add"
+	if IsUpdateDialog {
+		addBtnStr = "Edit"
+	}
+	addBtnRect := theCtx.drawButtonA(FD_AddBtn, addBtnOriginX, dialogOriginY+20, addBtnStr, "#fff", "#56845A")
 	closeBtnX := nextHorizontalCoords(addBtnRect, 10)
 	theCtx.drawButtonA(FD_CloseBtn, closeBtnX, addBtnRect.OriginY, "Close", "#fff", "#B75F5F")
 
