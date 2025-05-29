@@ -28,20 +28,27 @@ func drawItemsView(window *glfw.Window) {
 	currentX, currentY := 20, aFBRect.OriginY+aFBRect.Height+15
 	for i, fObj := range FormObjects {
 		theCtx.ggCtx.SetHexColor("#444")
-		str2 := fmt.Sprintf("%d. label: %s name: %s fieldtype: %s attributes: %s",
-			i+1, fObj["label"],
-			fObj["name"], fObj["fieldtype"], fObj["attributes"])
-		theCtx.ggCtx.DrawString(str2, float64(currentX), float64(currentY)+FontSize)
-
+		// theCtx.ggCtx.DrawString("name: "+fObj["name"], float64(currentX), float64(currentY)+FontSize)
+		eFOBtnId := 3000 + i + 1
+		eFOBRect := theCtx.drawButtonA(eFOBtnId, currentX, currentY, "name: "+fObj["name"], "#444", "#fff")
 		addBeforeBtnId := 2000 + 1 + i
 		aBBRect := theCtx.drawButtonA(addBeforeBtnId, currentX, currentY+30, "add before", "#fff", "#4E962D")
-		eFOBX := nextHorizontalCoords(aBBRect, 20)
-		eFOBtnId := 3000 + i + 1
-		eFOBRect := theCtx.drawButtonA(eFOBtnId, eFOBX, currentY+30, "edit", "#fff", "#968D2D")
-		dFOBX := nextHorizontalCoords(eFOBRect, 20)
+		// eFOBX := nextHorizontalCoords(aBBRect, 0)
+		dFOBX := nextHorizontalCoords(aBBRect, 0)
 		dFOBtnId := 4000 + i + 1
-		theCtx.drawButtonA(dFOBtnId, dFOBX, currentY+30, "delete", "#fff", "#962D2D")
-		currentY += 70
+		dFORect := theCtx.drawButtonA(dFOBtnId, dFOBX, currentY+30, "delete", "#fff", "#962D2D")
+
+		widthOfButtonsLump := aBBRect.Width + dFORect.Width
+		eFOBRect.Width = widthOfButtonsLump
+		WKObjCoords[eFOBtnId] = eFOBRect
+
+		newX := currentX + widthOfButtonsLump + 20
+		if newX > (wWidth - 200) {
+			currentY += 70
+			currentX = 20
+		} else {
+			currentX += widthOfButtonsLump + 20
+		}
 	}
 
 	// send the frame to glfw window
