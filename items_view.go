@@ -28,7 +28,6 @@ func drawItemsView(window *glfw.Window) {
 	currentX, currentY := 20, aFBRect.OriginY+aFBRect.Height+15
 	for i, fObj := range FormObjects {
 		theCtx.ggCtx.SetHexColor("#444")
-		// theCtx.ggCtx.DrawString("name: "+fObj["name"], float64(currentX), float64(currentY)+FontSize)
 		eFOBtnId := 3000 + i + 1
 		eFOBRect := theCtx.drawButtonA(eFOBtnId, currentX, currentY, "name: "+fObj["name"], "#444", "#fff")
 		addBeforeBtnId := 2000 + 1 + i
