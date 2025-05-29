@@ -13,15 +13,15 @@ const (
 	fontColor = "#444"
 	PageSize  = 20
 
-	PROJ_NameInput  = 11
-	PROJ_NewProject = 12
-	PROJ_NewForm    = 13
-	PROJ_FNameInput = 14
-	PROJ_OpenWDBtn  = 15
+	BEGINV_NameInput  = 11
+	BEGINV_NewProject = 12
+	BEGINV_NewForm    = 13
+	BEGINV_FNameInput = 14
+	BEGINV_OpenWDBtn  = 15
 
-	WK_AddFormBtn = 21
-	WK_OpenWDBtn  = 22
-	WK_BackBtn    = 23
+	ITEMSV_AddFormBtn = 21
+	ITEMSV_OpenWDBtn  = 22
+	ITEMSV_BackBtn    = 23
 
 	FD_AddBtn             = 31
 	FD_CloseBtn           = 32

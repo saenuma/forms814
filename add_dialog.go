@@ -10,7 +10,7 @@ import (
 	"github.com/kovidgoyal/imaging"
 )
 
-func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
+func drawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	FDObjCoords = make(map[int]g143.Rect)
 
 	wWidth, wHeight := window.GetSize()
@@ -198,7 +198,7 @@ func DrawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	CurrentWindowFrame = theCtx.ggCtx.Image()
 }
 
-func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
+func formDialogMouseBtnCB(window *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
 	if action != glfw.Release {
 		return
 	}
@@ -235,9 +235,9 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 			FD_LinkedTableInput: "", FD_MinValueInput: "", FD_MaxValueInput: "",
 		}
 
-		DrawWorkView(window)
+		drawItemsView(window)
 		// register the ViewMain mouse callback
-		window.SetMouseButtonCallback(workViewMouseBtnCallback)
+		window.SetMouseButtonCallback(itemsViewMouseBtnCB)
 		// unregister the keyCallback
 		window.SetKeyCallback(nil)
 		// window.SetScrollCallback(FirstUIScrollCallback)
@@ -363,11 +363,11 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		}
 		AttribState = make(map[string]bool)
 
-		DrawWorkView(window)
+		drawItemsView(window)
 		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
 
 		// register the ViewMain mouse callback
-		window.SetMouseButtonCallback(workViewMouseBtnCallback)
+		window.SetMouseButtonCallback(itemsViewMouseBtnCB)
 		// unregister the keyCallback
 		window.SetKeyCallback(nil)
 
@@ -417,7 +417,7 @@ func fdMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 
 }
 
-func FDKeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
+func formDialogKeyCB(window *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
 	if action != glfw.Release {
 		return
 	}
@@ -510,7 +510,7 @@ func FDKeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glfw.
 
 }
 
-func FDCharCallback(window *glfw.Window, char rune) {
+func formDialogCharCB(window *glfw.Window, char rune) {
 	wWidth, wHeight := window.GetSize()
 
 	if FD_SelectedInput == FD_LabelInput {

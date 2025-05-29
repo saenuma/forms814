@@ -12,7 +12,7 @@ import (
 	"github.com/tidwall/pretty"
 )
 
-func DrawWorkView(window *glfw.Window) {
+func drawItemsView(window *glfw.Window) {
 	window.SetTitle(fmt.Sprintf("Form: %s / %s ---- %s", ProjectName, FormName, ProgTitle))
 
 	WKObjCoords = make(map[int]g143.Rect)
@@ -21,9 +21,9 @@ func DrawWorkView(window *glfw.Window) {
 	theCtx := New2dCtx(wWidth, wHeight, &WKObjCoords)
 
 	// draw top buttons
-	bBRect := theCtx.drawButtonB(WK_BackBtn, 10, 10, "Back", "#fff", "#5C909C", "#286775")
+	bBRect := theCtx.drawButtonB(ITEMSV_BackBtn, 10, 10, "Back", "#fff", "#5C909C", "#286775")
 	aFBX := nextHorizontalCoords(bBRect, 20)
-	aFBRect := theCtx.drawButtonB(WK_AddFormBtn, aFBX, 10, "Add Form Item", "#fff", "#5F7E5D", "#889B87")
+	aFBRect := theCtx.drawButtonB(ITEMSV_AddFormBtn, aFBX, 10, "Add Form Item", "#fff", "#5F7E5D", "#889B87")
 
 	currentX, currentY := 20, aFBRect.OriginY+aFBRect.Height+15
 	for i, fObj := range FormObjects {
@@ -52,7 +52,7 @@ func DrawWorkView(window *glfw.Window) {
 	CurrentWindowFrame = theCtx.ggCtx.Image()
 }
 
-func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
+func itemsViewMouseBtnCB(window *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
 	if action != glfw.Release {
 		return
 	}
@@ -79,16 +79,16 @@ func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, acti
 	}
 
 	switch widgetCode {
-	case WK_AddFormBtn:
+	case ITEMSV_AddFormBtn:
 		// tmpFrame = CurrentWindowFrame
-		DrawFormDialog(window, CurrentWindowFrame)
-		window.SetMouseButtonCallback(fdMouseBtnCallback)
-		window.SetKeyCallback(FDKeyCallback)
-		window.SetCharCallback(FDCharCallback)
+		drawFormDialog(window, CurrentWindowFrame)
+		window.SetMouseButtonCallback(formDialogMouseBtnCB)
+		window.SetKeyCallback(formDialogKeyCB)
+		window.SetCharCallback(formDialogCharCB)
 		window.SetScrollCallback(nil)
 		window.SetCursorPosCallback(getHoverCB(FDObjCoords))
 
-	case WK_BackBtn:
+	case ITEMSV_BackBtn:
 		// save formobject
 		jsonBytes, _ := json.Marshal(FormObjects)
 		prettyJsonBytes := pretty.Pretty(jsonBytes)
@@ -100,7 +100,7 @@ func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, acti
 		ProjectName = "first_proj"
 		FormName = ""
 		DrawBeginView(window, "first_proj")
-		window.SetMouseButtonCallback(projViewMouseCallback)
+		window.SetMouseButtonCallback(beginViewMouseCB)
 		window.SetKeyCallback(ProjKeyCallback)
 		window.SetCharCallback(nil)
 		window.SetCursorPosCallback(getHoverCB(ProjObjCoords))
@@ -113,10 +113,10 @@ func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, acti
 		IsInsertBeforeDialog = true
 		ToInsertBefore = objNum
 
-		DrawFormDialog(window, CurrentWindowFrame)
-		window.SetMouseButtonCallback(fdMouseBtnCallback)
-		window.SetKeyCallback(FDKeyCallback)
-		window.SetCharCallback(FDCharCallback)
+		drawFormDialog(window, CurrentWindowFrame)
+		window.SetMouseButtonCallback(formDialogMouseBtnCB)
+		window.SetKeyCallback(formDialogKeyCB)
+		window.SetCharCallback(formDialogCharCB)
 		window.SetScrollCallback(nil)
 		window.SetCursorPosCallback(getHoverCB(FDObjCoords))
 
@@ -126,10 +126,10 @@ func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, acti
 		ToUpdateInstrNum = objNum
 		IsUpdateDialog = true
 
-		DrawFormDialog(window, CurrentWindowFrame)
-		window.SetMouseButtonCallback(fdMouseBtnCallback)
-		window.SetKeyCallback(FDKeyCallback)
-		window.SetCharCallback(FDCharCallback)
+		drawFormDialog(window, CurrentWindowFrame)
+		window.SetMouseButtonCallback(formDialogMouseBtnCB)
+		window.SetKeyCallback(formDialogKeyCB)
+		window.SetCharCallback(formDialogCharCB)
 		window.SetScrollCallback(nil)
 		window.SetCursorPosCallback(getHoverCB(FDObjCoords))
 
@@ -139,7 +139,7 @@ func workViewMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, acti
 		FormObjects = slices.Delete(FormObjects, objNum, objNum+1)
 
 		WKObjCoords = make(map[int]g143.Rect)
-		DrawWorkView(window)
+		drawItemsView(window)
 		window.SetCursorPosCallback(getHoverCB(WKObjCoords))
 
 	}

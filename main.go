@@ -28,7 +28,7 @@ func main() {
 	DrawBeginView(window, "first_proj")
 
 	// respond to the mouse
-	window.SetMouseButtonCallback(projViewMouseCallback)
+	window.SetMouseButtonCallback(beginViewMouseCB)
 	// respond to the keyboard
 	window.SetKeyCallback(ProjKeyCallback)
 	// save the project file
