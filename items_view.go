@@ -103,6 +103,7 @@ func itemsViewMouseBtnCB(window *glfw.Window, button glfw.MouseButton, action gl
 		os.WriteFile(outPath, prettyJsonBytes, 0777)
 
 		// draw projects selection view
+		FormObjects = make([]map[string]string, 0)
 		ProjectName = "first_proj"
 		FormName = ""
 		DrawBeginView(window, "first_proj")
