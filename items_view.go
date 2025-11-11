@@ -104,9 +104,8 @@ func itemsViewMouseBtnCB(window *glfw.Window, button glfw.MouseButton, action gl
 
 		// draw projects selection view
 		FormObjects = make([]map[string]string, 0)
-		ProjectName = "first_proj"
 		FormName = ""
-		DrawBeginView(window, "first_proj")
+		DrawBeginView(window, ProjectName)
 		window.SetMouseButtonCallback(beginViewMouseCB)
 		window.SetKeyCallback(ProjKeyCallback)
 		window.SetCharCallback(nil)

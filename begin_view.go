@@ -14,6 +14,7 @@ import (
 func DrawBeginView(window *glfw.Window, project string) {
 	ProjObjCoords = make(map[int]g143.Rect)
 	wWidth, wHeight := window.GetSize()
+	window.SetTitle(ProgTitle)
 
 	theCtx := New2dCtx(wWidth, wHeight, &ProjObjCoords)
 
