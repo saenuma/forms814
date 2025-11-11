@@ -19,11 +19,12 @@ func drawItemsView(window *glfw.Window) {
 
 	wWidth, wHeight := window.GetSize()
 	theCtx := New2dCtx(wWidth, wHeight, &WKObjCoords)
-
+	theCtx.setFontSize(25)
 	// draw top buttons
-	bBRect := theCtx.drawButtonB(ITEMSV_BackBtn, 10, 10, "Back", "#fff", "#5C909C", "#286775")
-	aFBX := nextHorizontalCoords(bBRect, 20)
-	aFBRect := theCtx.drawButtonB(ITEMSV_AddFormBtn, aFBX, 10, "Add Form Item", "#fff", "#5F7E5D", "#889B87")
+	bBRect := theCtx.drawButtonA(ITEMSV_BackBtn, 10, 10, "Back", fontColor, "#aaa")
+	aFBX := nextX(bBRect, 40)
+	aFBRect := theCtx.drawButtonA(ITEMSV_AddFormBtn, aFBX, 10, "Add Form Item", "#fff", "#333")
+	theCtx.setFontSize(20)
 
 	currentX, currentY := 20, aFBRect.OriginY+aFBRect.Height+15
 	for i, fObj := range FormObjects {
@@ -31,11 +32,12 @@ func drawItemsView(window *glfw.Window) {
 		eFOBtnId := 3000 + i + 1
 		eFOBRect := theCtx.drawButtonA(eFOBtnId, currentX, currentY, "name: "+fObj["name"], "#444", "#fff")
 		addBeforeBtnId := 2000 + 1 + i
-		aBBRect := theCtx.drawButtonA(addBeforeBtnId, currentX, currentY+30, "add before", "#fff", "#4E962D")
-		// eFOBX := nextHorizontalCoords(aBBRect, 0)
-		dFOBX := nextHorizontalCoords(aBBRect, 0)
+		aBBY := nextY(eFOBRect, 0)
+		aBBRect := theCtx.drawButtonA(addBeforeBtnId, currentX, aBBY, "add before", "#fff", "#333")
+		// eFOBX := nextX(aBBRect, 0)
+		dFOBX := nextX(aBBRect, 0)
 		dFOBtnId := 4000 + i + 1
-		dFORect := theCtx.drawButtonA(dFOBtnId, dFOBX, currentY+30, "delete", "#fff", "#962D2D")
+		dFORect := theCtx.drawButtonA(dFOBtnId, dFOBX, aBBY, "delete", fontColor, "#aaa")
 
 		widthOfButtonsLump := aBBRect.Width + dFORect.Width
 		eFOBRect.Width = widthOfButtonsLump

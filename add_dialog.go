@@ -44,9 +44,9 @@ func drawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	if IsUpdateDialog {
 		addBtnStr = "Edit"
 	}
-	addBtnRect := theCtx.drawButtonA(FD_AddBtn, addBtnOriginX, dialogOriginY+20, addBtnStr, "#fff", "#56845A")
-	closeBtnX := nextHorizontalCoords(addBtnRect, 10)
-	theCtx.drawButtonA(FD_CloseBtn, closeBtnX, addBtnRect.OriginY, "Close", "#fff", "#B75F5F")
+	addBtnRect := theCtx.drawButtonA(FD_AddBtn, addBtnOriginX, dialogOriginY+20, addBtnStr, "#fff", "#333")
+	closeBtnX := nextX(addBtnRect, 10)
+	theCtx.drawButtonA(FD_CloseBtn, closeBtnX, addBtnRect.OriginY, "Close", fontColor, "#aaa")
 
 	// name input
 	theCtx.ggCtx.SetHexColor("#444")
@@ -78,7 +78,7 @@ func drawFormDialog(window *glfw.Window, currentFrame image.Image) {
 		} else {
 			cIRect = theCtx.drawCheckbox(cBtnId, currentX, currentY, false)
 		}
-		cILX := nextHorizontalCoords(cIRect, 10)
+		cILX := nextX(cIRect, 10)
 
 		theCtx.ggCtx.SetHexColor("#444")
 		theCtx.ggCtx.DrawString(attribName, float64(cILX), float64(currentY)+FontSize)
@@ -88,7 +88,7 @@ func drawFormDialog(window *glfw.Window, currentFrame image.Image) {
 
 	// label input
 	theCtx.ggCtx.SetHexColor("#444")
-	fLLY := nextVerticalCoords(fNIRect, 15)
+	fLLY := nextY(fNIRect, 15)
 	theCtx.ggCtx.DrawString("field label:", float64(aFLX), float64(fLLY)+FontSize)
 	fLLW, _ := theCtx.ggCtx.MeasureString("field label:")
 	fLIX := aFLX + int(fLLW) + 20
@@ -102,7 +102,7 @@ func drawFormDialog(window *glfw.Window, currentFrame image.Image) {
 
 	// field type
 	theCtx.ggCtx.SetHexColor("#444")
-	fTLY := nextVerticalCoords(fLIRect, 15)
+	fTLY := nextY(fLIRect, 15)
 	theCtx.ggCtx.DrawString("field type:", float64(aFLX), float64(fTLY)+FontSize)
 	fTLW, _ := theCtx.ggCtx.MeasureString("field type:")
 	currentX, currentY = aFLX+int(fTLW)+20, fTLY
@@ -116,7 +116,7 @@ func drawFormDialog(window *glfw.Window, currentFrame image.Image) {
 		} else {
 			cIRect = theCtx.drawCheckbox(cBtnId, currentX, currentY, false)
 		}
-		cILX := nextHorizontalCoords(cIRect, 10)
+		cILX := nextX(cIRect, 10)
 
 		theCtx.ggCtx.SetHexColor("#444")
 		theCtx.ggCtx.DrawString(field, float64(cILX), float64(currentY)+FontSize)
@@ -143,15 +143,15 @@ func drawFormDialog(window *glfw.Window, currentFrame image.Image) {
 		// EnteredTxts[FD_SelectOptionsInput] = val2
 	}
 	pBY := sFOLY + 30
-	sPBRS := theCtx.drawButtonA(FD_SelectPasteBtn, aFLX, pBY, "paste", "#444", "#E7E199")
-	sEBX := nextHorizontalCoords(sPBRS, 20)
-	sEBRS := theCtx.drawButtonA(FD_SelectEmptyBtn, sEBX, pBY, "empty", "#444", "#E7E199")
-	sOIY := nextVerticalCoords(sEBRS, 10)
+	sPBRS := theCtx.drawButtonA(FD_SelectPasteBtn, aFLX, pBY, "paste", "#444", "#aaa")
+	sEBX := nextX(sPBRS, 20)
+	sEBRS := theCtx.drawButtonA(FD_SelectEmptyBtn, sEBX, pBY, "empty", "#444", "#aaa")
+	sOIY := nextY(sEBRS, 10)
 	sOIRect := theCtx.drawTextInput(FD_SelectOptionsInput, aFLX, sOIY, 400, 200, val2, false)
 
 	// for int fields
 	theCtx.ggCtx.SetHexColor("#444")
-	nFOLX := nextHorizontalCoords(sOIRect, 40)
+	nFOLX := nextX(sOIRect, 40)
 	theCtx.ggCtx.DrawString("int field options:", float64(nFOLX), float64(sFOLY+FontSize))
 
 	lTLY := sFOLY + 40
@@ -168,7 +168,7 @@ func drawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	lTIRect := theCtx.drawInput(FD_LinkedTableInput, lTIX, lTLY, 250, val4, false)
 
 	// min value input
-	mVLY := nextVerticalCoords(lTIRect, 10)
+	mVLY := nextY(lTIRect, 10)
 	theCtx.ggCtx.SetHexColor("#444")
 	theCtx.ggCtx.DrawString("min value:", float64(nFOLX), float64(mVLY)+FontSize)
 	mVLW, _ := theCtx.ggCtx.MeasureString("min value:")
@@ -182,7 +182,7 @@ func drawFormDialog(window *glfw.Window, currentFrame image.Image) {
 	mVIRect := theCtx.drawInput(FD_MinValueInput, mVIX, mVLY, 250, val5, false)
 
 	// max value input
-	mV2LY := nextVerticalCoords(mVIRect, 15)
+	mV2LY := nextY(mVIRect, 15)
 	theCtx.ggCtx.SetHexColor("#444")
 	theCtx.ggCtx.DrawString("max value:", float64(nFOLX), float64(mV2LY)+FontSize)
 

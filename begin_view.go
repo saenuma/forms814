@@ -18,14 +18,11 @@ func DrawBeginView(window *glfw.Window, project string) {
 
 	theCtx := New2dCtx(wWidth, wHeight, &ProjObjCoords)
 
-	fontPath := GetDefaultFontPath()
-	theCtx.ggCtx.LoadFontFace(fontPath, 30)
-
+	theCtx.setFontSize(25)
 	theCtx.ggCtx.SetHexColor(fontColor)
 	theCtx.ggCtx.DrawString("Projects", 20, 10+30)
-	theCtx.ggCtx.LoadFontFace(fontPath, 20)
-
-	theCtx.drawButtonB(BEGINV_OpenWDBtn, 200, 10, "Open Folder", "#fff", "#5C909C", "#286775")
+	theCtx.drawButtonA(BEGINV_OpenWDBtn, 200, 10, "Open Folder", fontColor, "#aaa")
+	theCtx.setFontSize(20)
 
 	projects := GetProjects()
 	currentX := 40
@@ -35,7 +32,7 @@ func DrawBeginView(window *glfw.Window, project string) {
 	for i, pf := range projects {
 
 		btnId := 1000 + (i + 1)
-		pfRect := theCtx.drawButtonA(btnId, currentX, currentY, pf, "#fff", "#5F699F")
+		pfRect := theCtx.drawButtonA(btnId, currentX, currentY, pf, "#fff", "#444")
 
 		newX := currentX + pfRect.Width + 10
 		if newX > (projectsPaneWidth - pfRect.Width) {
@@ -49,24 +46,25 @@ func DrawBeginView(window *glfw.Window, project string) {
 
 	// new project form
 	pnIRect := theCtx.drawInput(BEGINV_NameInput, 40, wHeight-60, 350, "enter project name", false)
-	pnBtnX := nextHorizontalCoords(pnIRect, 30)
-	theCtx.drawButtonA(BEGINV_NewProject, pnBtnX, pnIRect.OriginY, "New Project", fontColor, "#B3AE97")
+	pnBtnX := nextX(pnIRect, 30)
+	theCtx.drawButtonA(BEGINV_NewProject, pnBtnX, pnIRect.OriginY, "New Project", fontColor, "#aaa")
 
 	// second column
 	secondColumnX := projectsPaneWidth + 50
-	theCtx.ggCtx.LoadFontFace(fontPath, 30)
+	theCtx.setFontSize(30)
 	theCtx.ggCtx.DrawString(fmt.Sprintf("Form Objects of %s", project), float64(secondColumnX), 10+30)
 
 	// forms of project
 	formsOfCurrentProject := GetProjectFiles(project)
 	currentX = secondColumnX + 40
 	currentY = 30 + 10 + 20
-	theCtx.ggCtx.LoadFontFace(fontPath, 20)
+
+	theCtx.setFontSize(20)
 
 	for i, fName := range formsOfCurrentProject {
 
 		btnId := 2000 + (i + 1)
-		pfRect := theCtx.drawButtonA(btnId, currentX, currentY, fName, "#fff", "#707695")
+		pfRect := theCtx.drawButtonA(btnId, currentX, currentY, fName, "#fff", "#444")
 
 		newX := currentX + pfRect.Width + 10
 		if newX > (wWidth - pfRect.Width) {
@@ -80,8 +78,8 @@ func DrawBeginView(window *glfw.Window, project string) {
 
 	// new formObject form
 	fnIRect := theCtx.drawInput(BEGINV_FNameInput, secondColumnX+40, wHeight-60, 350, "enter form name", false)
-	fnBtnX := nextHorizontalCoords(fnIRect, 30)
-	theCtx.drawButtonA(BEGINV_NewForm, fnBtnX, fnIRect.OriginY, "New Form", fontColor, "#B3AE97")
+	fnBtnX := nextX(fnIRect, 30)
+	theCtx.drawButtonA(BEGINV_NewForm, fnBtnX, fnIRect.OriginY, "New Form", fontColor, "#aaa")
 
 	// send the frame to glfw window
 	windowRS := g143.Rect{Width: wWidth, Height: wHeight, OriginX: 0, OriginY: 0}
